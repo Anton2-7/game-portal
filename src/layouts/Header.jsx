@@ -1,10 +1,11 @@
+import soldier from "../images/soldier.jpg"
+
 function Header() {
   return (
     <nav className="red darken-4">
       <div className="nav-wrapper">
         <a href="#!" className="brand-logo">
-          <img src="/images/soldier.jpg" alt="Солдат" />
-          Logo
+          Игровой Portal
         </a>
         <ul className="right hide-on-med-and-down">
           <li>
