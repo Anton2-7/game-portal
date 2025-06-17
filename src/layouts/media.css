@@ -1,0 +1,43 @@
+@media (max-width:992px) {
+   .burger-menu {
+    padding: 40px 20px;
+    display: flex !important;
+    width: auto;
+    left: 2rem;
+    right: 2rem;
+    z-index: 2;
+    text-align: center;
+    }
+    .r-search {
+        display: none;
+    }
+    nav ul {
+        position: relative;
+    }
+    .burger {
+        display: block !important;
+        position: absolute !important;
+        left: 20px;
+    }
+    .nav-wrapper {
+        justify-content: center !important;
+    }
+    .soldierIcn {
+        position: relative;
+    }
+    .brand-logo {
+        left: auto;
+        position:  relative !important;
+        transform: none !important;
+        left: auto !important;
+    }   
+}
+
+@media (max-width:399px) {
+.soldierIcn {
+    display: none;
+}
+.brand-logo {
+    margin-left: 63px;
+}
+}

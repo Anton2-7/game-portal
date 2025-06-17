@@ -9,7 +9,7 @@ function Game(props) {
     </div>
     <div className="card-content">
       <span className="card-title activator grey-text text-darken-4">{name}<i className="material-icons right"></i></span>
-              <p>{rating} | {released}</p>
+              <p>Рейтинг: {rating} | Релиз: {released}</p>
 
     </div>
    
