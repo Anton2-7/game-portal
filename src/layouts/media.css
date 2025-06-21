@@ -1,5 +1,5 @@
-@media (max-width:992px) {
-   .burger-menu {
+@media (max-width: 992px) {
+  .burger-menu {
     padding: 40px 20px;
     display: flex !important;
     width: auto;
@@ -7,37 +7,52 @@
     right: 2rem;
     z-index: 2;
     text-align: center;
-    }
-    .r-search {
-        display: none;
-    }
-    nav ul {
-        position: relative;
-    }
-    .burger {
-        display: block !important;
-        position: absolute !important;
-        left: 20px;
-    }
-    .nav-wrapper {
-        justify-content: center !important;
-    }
-    .soldierIcn {
-        position: relative;
-    }
-    .brand-logo {
-        left: auto;
-        position:  relative !important;
-        transform: none !important;
-        left: auto !important;
-    }   
+  }
+  .r-searchM {
+    margin-top: 69px !important;
+    display: flex !important;
+    align-items: center;
+    border: 3px solid #92959c!important;
+    padding: 5px 15px 5px 15px !important;
+  }
+  .games {
+    margin-top: 15px !important;
+  }
+  .r-search {
+    display: none !important;
+  }
+  nav ul {
+    position: relative;
+  }
+  .burger {
+    display: block !important;
+  }
+
+  .soldierIcn {
+    position: relative;
+  }
+  .brand-logo {
+    left: auto;
+    position: relative !important;
+    transform: none !important;
+    left: auto !important;
+  }
+  .search-btn {
+    display: none;
+  }
 }
 
-@media (max-width:399px) {
-.soldierIcn {
+@media (max-width: 399px) {
+  .soldierIcn {
     display: none;
-}
-.brand-logo {
-    margin-left: 63px;
-}
+  }
+  .brand-logo {
+    margin-left: 23px;
+  }
+  .burger {
+    margin: auto !important;
+  }
+  nav {
+    padding: 0 1.5rem !important;
+  }
 }

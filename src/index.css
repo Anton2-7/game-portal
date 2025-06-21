@@ -2,15 +2,15 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 nav {
-  padding: 0 1.5rem;
+  padding: 0 0.4rem;
 }
 
 .content {
@@ -25,14 +25,7 @@ nav {
   gap: 1rem;
 }
 
-.r-search {
-  margin-left: 20px;
-  margin-right: 0;
-  margin-bottom: 0;
-  z-index: 1;
-}
-
-.input-field input{
+.input-field input {
   padding-left: 1rem;
 }
 
@@ -51,7 +44,7 @@ nav {
 }
 
 nav .brand-logo {
-  position: relative;  
+  position: relative;
 }
 
 .card {
@@ -66,21 +59,39 @@ nav .brand-logo {
   top: 50%;
 }
 .burger-menu {
-  background-color: red;
   position: absolute;
-  right: 2rem;
-  display: none;
-  top: -243px;
-  transition: transform 0.3s linear;
+  top: 65px;
+  left: 1.5rem;
+  background-color: #b71c1c; /* red darken-4 */
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(-20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  z-index: 2;
 }
 
 .burger-menu.active {
-  transform: translateY(100%);
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .burger-list {
   display: flex;
   flex-direction: column;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+button:active {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+button:focus {
+  background-color: rgba(255, 255, 255, 0) !important;
 }
 nav {
   position: fixed;
@@ -91,55 +102,156 @@ nav {
   margin-top: 65px;
 }
 
-
-.burger-checkbox {
-  position: absolute;
-  visibility: hidden;
-  display: none;
-}
 .burger {
   cursor: pointer;
   position: relative;
-  display: none;
   border: none;
   background: transparent;
   width: 40px;
-  z-index: 3;
+  display: none;
   height: 26px;
-  margin: 30px auto;
+  z-index: 3;
+  margin: 1rem 1.2rem 1rem 1.2rem;
 }
 .burger::before,
 .burger::after {
-  content: '';
-  left: 0;
+  content: "";
   position: absolute;
-  display: block;
+  left: 0;
   width: 100%;
   height: 4px;
   background: #ffffff;
+  transition: all 0.3s ease;
 }
 .burger::before {
   top: 0;
   box-shadow: 0 11px 0 #ffffff;
-  transition: box-shadow .3s .15s, top .3s .15s, transform .3s;
 }
 .burger::after {
   bottom: 0;
-  transition: bottom .3s .15s, transform .3s;
 }
-.burger-checkbox:checked + .burger::before {
+
+.burger.open::before {
   top: 11px;
   transform: rotate(45deg);
-  box-shadow: 0 6px 0 rgba(252, 252, 252, 0);
-  transition: box-shadow .15s, top .3s, transform .3s .15s;
+  box-shadow: 0 6px 0 rgba(255, 255, 255, 0);
 }
-.burger-checkbox:checked + .burger::after {
+.burger.open::after {
   bottom: 11px;
   transform: rotate(-45deg);
-  transition: bottom .3s, transform .3s .15s;
 }
 
 .logo-wrapper {
   align-items: center;
   display: flex;
+  position: relative;
+}
+
+.search-btn {
+  background-color: rgba(255, 255, 255, 0) !important;
+  padding: 10px 10px;
+  border: none;
+  cursor: pointer;
+  width: 45px;
+}
+.search-btn:active {
+  background-color: rgb(239, 147, 9);
+  color: #fff;
+}
+.validate {
+  color: #fff;
+  padding: 1rem 2rem;
+  border: none;
+  border-bottom: 1px solid rgb(239, 147, 9);
+}
+.validate:focus,
+.validate:active {
+  border-bottom: 2px solid #fff;
+}
+
+.searchM:active,
+.searchM:focus,
+.searchM:hover,
+.searchM {
+  border-bottom: none !important;
+}
+
+.searchM {
+  margin: 0 0 0 10px !important;
+  font-size: 1.3rem !important;
+  color: #92959c;
+  font-weight: 600;
+}
+
+.searchM, .searchM:focus, .searchM:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.search-icon {
+  order: -1;
+}
+
+
+.input-field input:focus {
+  border-bottom: 2px solid #fff !important;
+  box-shadow: none !important;
+}
+
+.input-field input:focus + label {
+  color: #fff !important;
+}
+.input-field input:focus {
+  border-bottom: 2px solid #fff !important;
+  box-shadow: none;
+}
+
+#search:active,
+#search:focus,
+#search:hover,
+#search:visited {
+  border-bottom: 1px solid #fff !important;
+}
+
+#search:focus {
+  color: #fff;
+}
+
+.r-search {
+  display: flex;
+  align-items: center;
+}
+
+.r-search {
+  margin-right: 10px;
+  margin-bottom: 0;
+  z-index: 1;
+}
+
+.r-searchM {
+  margin-top: 20px;
+  display: none;
+}
+
+.validate {
+  margin-right: 10px;
+  opacity: 0 !important;
+  box-shadow: none !important;
+  visibility: hidden !important;
+  transition: opacity 0.5s ease, visibility 0.5s !important;
+}
+
+.validate.show {
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.clearSearchBtn {
+  outline: none;
+  border: none;
+  cursor: pointer;
+  background: none;
+  font-weight: 600;
+  color: #92959c;
+  font-size: 1.2rem;
 }
