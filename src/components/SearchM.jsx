@@ -18,6 +18,14 @@ class SearchM extends React.Component {
     });
   };
 
+  handleKey = (e) => {
+    if (e.key === "Enter") {
+      this.props.onSearch(this.state.search);
+    }
+  }
+
+
+
   render() {
     const { search } = this.state;
 
@@ -29,8 +37,11 @@ class SearchM extends React.Component {
           placeholder="Поиск"
           type="text" 
           value={search}
-          onChange={this.handleChange}/>
-                    <img width="30" height="30" className="search-icon" src={SerachGrayIcn} alt="Поиск" />
+          onChange={this.handleChange}
+          onKeyDown={this.handleKey}
+      />
+                    <img width="30" height="30" className="search-icon" src={SerachGrayIcn} alt="Поиск"
+          />
 
        <button className="clearSearchBtn" onClick={this.toggleClear}>Очистить</button>
       </div>

@@ -15,11 +15,19 @@ class Search extends React.Component {
     }));
   };
 
+ handleKey = (e) => {
+    if (e.key === "Enter") {
+      this.props.onSearch(this.state.search);
+    }
+  }
+
   handleChange = (e) => {
     this.setState({
       search: e.target.value
     });
   };
+
+
 
   render() {
     const { search, isOpen } = this.state;
@@ -33,6 +41,7 @@ class Search extends React.Component {
           type="text" 
           value={search}
           onChange={this.handleChange}
+          onKeyDown={this.handleKey}
         />
         {(isOpen === true) ?  <button
           className="search-btn"

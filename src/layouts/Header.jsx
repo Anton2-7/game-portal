@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
 
-function Header() {
+function Header(props) {
   const [isOpen, setOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -24,7 +24,7 @@ function Header() {
               Игровой Portal
             </a>
           </div>
-          <Search />
+          <Search onSearch={props.onSearch}/>
           <ul className="right hide-on-med-and-down">
             <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
             <li><a href="badges.html"><i className="material-icons">обзоры</i></a></li>
