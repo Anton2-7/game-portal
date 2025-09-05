@@ -5,8 +5,13 @@ import CloseBtn from "../images/close_10015296.png"
 class Search extends React.Component {
   state = {
     search: '',
+    type: 'all',
     isOpen: false
   };
+
+  handleFilter = (event) => {
+
+  }
 
   toggleSearch = () => {
     this.setState((prevState) => ({
@@ -47,6 +52,7 @@ class Search extends React.Component {
           className="search-btn"
           onClick={this.toggleSearch}
           type="button"
+          datatype="all"
         >
          <img className="Закрыть" src={CloseBtn} alt="Закрыть" />
         </button>

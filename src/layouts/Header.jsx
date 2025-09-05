@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
-
+import { Platorms } from "../pages/Platforms";
+import { Link } from "react-router-dom";
 function Header(props) {
   const [isOpen, setOpen] = useState(false);
 
@@ -20,14 +21,14 @@ function Header(props) {
               aria-label="Открыть меню"
             ></button>
             <img className="soldierIcn" src={SoldierIcon} alt="Солдат" />
-            <a href="#!" className="brand-logo">
+            <a href="/" className="brand-logo">
               Игровой Portal
             </a>
           </div>
           <Search onSearch={props.onSearch}/>
           <ul className="right hide-on-med-and-down">
             <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
-            <li><a href="badges.html"><i className="material-icons">обзоры</i></a></li>
+            <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
             <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
           </ul>
         </div>

@@ -1,0 +1,51 @@
+.platforms {
+    display: grid;
+    grid-template-columns: repeat(3, 2fr);
+    grid-template-rows: repeat(3, 2fr);
+    grid-column-gap: 20px;
+    grid-row-gap: 10px;
+    padding-top: 85px;
+    justify-content: center;
+    text-align: center;
+}
+
+.platforms__images {
+    max-width: 400px;
+    max-height: 300px;
+    height: auto;
+    grid-row: 1/2;
+    grid-column: 5;
+    text-align: left;
+}
+
+.platforms__games {
+    text-align: left;
+    font-size: 20px;
+}
+.platforms__games-list {
+    text-align: left;
+}
+.GamePage__btn-back {
+    background-color:#F44336 ;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    border: 1px #F44336 solid;
+    color: white;
+}
+
+.GamePage__btn-back:hover {
+    background-color:darkred !important;
+    border: 1px darkred solid;
+
+}
+
+.GamePage__title {
+    font-size: 2.5rem;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.GamePage__tags {
+    display: flex;
+}

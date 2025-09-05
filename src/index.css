@@ -9,6 +9,10 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+h1,h2,h3,h4 {
+  margin: 0;
+}
+
 nav {
   padding: 0 0.4rem;
 }
@@ -17,6 +21,10 @@ nav {
   min-height: calc(100vh - 64px - 254px);
   padding: 1.5rem 0;
   position: relative;
+}
+
+.container {
+  margin: 0 auto;
 }
 
 .games {
@@ -48,6 +56,7 @@ nav .brand-logo {
 }
 
 .card {
+  max-height: 356px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -98,9 +107,6 @@ nav {
   z-index: 2;
 }
 
-.games {
-  margin-top: 65px;
-}
 
 .burger {
   cursor: pointer;
@@ -130,7 +136,9 @@ nav {
 .burger::after {
   bottom: 0;
 }
-
+.card .card-image img {
+  height: 100%;
+}
 .burger.open::before {
   top: 11px;
   transform: rotate(45deg);
@@ -201,7 +209,6 @@ nav {
   top: 50%;
 }
 
-
 .searchM,
 .searchM:focus,
 .searchM:active {
@@ -239,7 +246,7 @@ nav {
   background-color: #92959c;
   display: inline-flex;
   align-items: center;
-  right:8px;
+  right: 8px;
 }
 
 .input-field input:focus {
@@ -305,4 +312,47 @@ nav {
   align-items: center;
   display: flex;
   font-size: 1.2rem;
+}
+.side-menu_filter {
+  position: fixed;
+  height: 100vh;
+  display: block;
+  left: 0;
+  top: 70px;
+  float: left;
+  z-index: 999;
+  background-color: #000 !important;
+}
+.side-menu_list {
+  position: relative;
+  top: 60px;
+  padding: 20px 5px 20px 5px;
+  color: #fff;
+  margin-left: 10px;
+  width: 200px;
+}
+
+.side-menu_list-item {
+  padding: 10px 0 10px 0;
+  cursor: pointer;
+}
+
+.side-menu_list-item:hover {
+  background-color: #b71c1c90;
+
+}
+.filter {
+  display: flex;
+  margin-top: 50px;
+  p {
+    padding-right: 10px;
+  }
+  [type="radio"]:checked+span:after {
+    background-color: #B71C1C;
+    border: #B71C1C;
+  }
+}
+.side-menu_list-item--item-choosed {
+  background-color: #b71c1c;
+  
 }

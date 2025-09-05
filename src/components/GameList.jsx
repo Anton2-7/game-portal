@@ -1,9 +1,11 @@
-function Game(props) {
-  const { name, released, background_image, rating} = props;
+import { Link } from 'react-router-dom';
+
+function GameList(props) {
+  const { name, released, background_image, rating, id} = props;
   return (
     <>
 
-  <div className="card">
+  <Link to={`/games/${id}`} className="card">
     <div className="card-image waves-effect waves-block waves-light">
       <img className="activator" src={background_image}/>
     </div>
@@ -13,9 +15,9 @@ function Game(props) {
 
     </div>
    
-  </div>
+  </Link>
 
     </>
   );
 }
-export { Game };
+export { GameList };

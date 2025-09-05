@@ -7,13 +7,13 @@ class Main extends React.Component {
     const { gameSearch, loading, onSearch } = this.props;
 
     return (
-      <main className="container content">
+      <>
         {loading ? (
           <Preloader />
         ) : (
           <Games games={gameSearch} searchGames={onSearch} />
         )}
-      </main>
+        </>
     );
   }
 }

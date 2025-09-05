@@ -1,14 +1,17 @@
-import { Game } from "./Game";
+import FilterBtns from "./FilterBtns";
+import { GameList } from "./GameList";
 import { SearchM } from "./SearchM";
 
 function Games(props) {
   const { games } = props;
   return (
     <>
+     
       <SearchM onSearch={props.searchGames} />
+      <FilterBtns/>
       <div className="games">
         {games.map((game) => (
-          <Game key={game.id} {...game} />
+          <GameList key={game.id} {...game} />
         ))}
       </div>
     </>
