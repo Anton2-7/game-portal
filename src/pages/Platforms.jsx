@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { Preloader } from "../components/Preloader";
 import { RadioInput } from "../components/RadioInput";
 import "./style.css";
-import { Pagination } from "../components/Pagination";
+import { Pagination } from "../components/Pagination/Pagination";
 
 const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
 const PAGE_SIZE = 20; // Количество игр на страницу

@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./style.css";
 function Pagination({ page, totalPages, onPageChange }) {
     const [pageTo, setPageTo] = useState("");
 
@@ -14,17 +14,15 @@ function Pagination({ page, totalPages, onPageChange }) {
     return (
         <div className="pagination" style={{ marginTop: 20, display: "flex", alignItems: "center", gap: "10px" }}>
             {/* Кнопка назад */}
-            <button onClick={() => onPageChange(page - 1)} disabled={page === 1}>
+            <button className="pagination-btn" onClick={() => onPageChange(page - 1)} disabled={page === 1}>
                 Назад
             </button>
 
-            {/* Номер текущей страницы */}
             <span>
                 Страница {page} из {totalPages}
             </span>
 
-            {/* Кнопка дальше */}
-            <button onClick={() => onPageChange(page + 1)} disabled={page === totalPages}>
+            <button className="pagination-btn" onClick={() => onPageChange(page + 1)} disabled={page === totalPages}>
                 Дальше
             </button>
 
@@ -42,7 +40,7 @@ function Pagination({ page, totalPages, onPageChange }) {
                     style={{ width: "60px" }}
                 />
                 <span>страницу</span>
-                <button onClick={handleGoToPage}>Перейти</button>
+                <button className="pagination-btn" onClick={handleGoToPage}>Перейти</button>
             </div>
         </div>
     );
