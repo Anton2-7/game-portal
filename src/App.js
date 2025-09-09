@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import { Header } from "./layouts/Header";
 import { Footer } from "./layouts/Footer";
 import { Main } from "./layouts/Main";
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import { Platforms } from "./pages/Platforms"; 
-import {GamePage} from "./pages/GamePage"
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { Platforms } from "./pages/Platforms";
+import { GamePage } from "./pages/GamePage";
+import { ScrollToTop } from "./components/ScrollToTop";
 function App() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true); // Изначально true, чтобы показать прелоадер
@@ -18,8 +19,8 @@ function App() {
       );
       const data = await res.json();
       setGames(data.results || []);
-            console.log("Данные загружены:", data);
- // на случай если results нет
+      console.log("Данные загружены:", data);
+      // на случай если results нет
     } catch (err) {
       console.error("Ошибка при загрузке данных:", err);
     } finally {
@@ -27,24 +28,40 @@ function App() {
     }
   };
 
- // <-- добавлена закрывающая скобка
+  // <-- добавлена закрывающая скобка
   // при первом запуске — загрузить что-то по умолчанию
   useEffect(() => {
     searchGames("cyberpunk");
-
   }, []);
-
 
   return (
     <>
       <Header onSearch={searchGames} />
-       <main className="container content">
-      <Routes>
-        <Route path="/" element={<Main gameSearch={games} loading={loading} onSearch={searchGames} />} />
-          <Route path="/platforms" element={<Platforms />} />
-          <Route path="/games/:id" element={<GamePage loading={loading}/>} ></Route>
+      <main className="container content">
+        <ScrollToTop />
+
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Main
+                gameSearch={games}
+                loading={loading}
+                onSearch={searchGames}
+              />
+            }
+          />
+          <Route
+            path="/platforms"
+            searchGames={searchGames}
+            element={<Platforms />}
+          />
+          <Route
+            path="/games/:id"
+            element={<GamePage loading={loading} />}
+          ></Route>
         </Routes>
-        </main>
+      </main>
       <Footer />
     </>
   );

@@ -1,51 +1,87 @@
 .platforms {
-    display: grid;
-    grid-template-columns: repeat(3, 2fr);
-    grid-template-rows: repeat(3, 2fr);
-    grid-column-gap: 20px;
-    grid-row-gap: 10px;
-    padding-top: 85px;
-    justify-content: center;
-    text-align: center;
+  display: grid;
+  grid-template-columns: repeat(3, 2fr);
+  grid-column-gap: 20px;
+  grid-row-gap: 10px;
+  justify-content: center;
+  text-align: center;
 }
 
 .platforms__images {
-    max-width: 400px;
-    max-height: 300px;
-    height: auto;
-    grid-row: 1/2;
-    grid-column: 5;
-    text-align: left;
+  max-width: 400px;
+  max-height: 300px;
+  height: auto;
+  grid-row: 1/2;
+  grid-column: 5;
+  text-align: left;
 }
-
+.platform-title {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: black;
+  padding-left: 10px;
+  padding-top: 10px;
+  cursor: pointer;
+  text-align: left;
+}
+.card-platfroms {
+  overflow: hidden;
+  box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.07);
+  box-sizing: border-box;
+  margin-bottom: 20px;
+}
+.platform-filter {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
 .platforms__games {
-    text-align: left;
-    font-size: 20px;
+  text-align: left;
+  font-size: 20px;
 }
 .platforms__games-list {
-    text-align: left;
+  text-align: left;
 }
 .GamePage__btn-back {
-    background-color:#F44336 ;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    border: 1px #F44336 solid;
-    color: white;
+  background-color: #f44336;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  border: 1px #f44336 solid;
+  color: white;
 }
 
 .GamePage__btn-back:hover {
-    background-color:darkred !important;
-    border: 1px darkred solid;
-
+  background-color: darkred !important;
+  border: 1px darkred solid;
 }
 
 .GamePage__title {
-    font-size: 2.5rem;
-    text-align: center;
-    margin-bottom: 10px;
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 10px;
 }
 
 .GamePage__tags {
-    display: flex;
+  display: flex;
+}
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
+  gap: 10px;
+}
+.pageTo {
+  display: flex;
+}
+
+.pageToInput {
+  flex-basis: 2px;
+  margin-left: 10px;
+  min-width: 40px;
+}
+.card .card-content p {
+  color: #ee6e73;
+  font-weight: 500;
 }
