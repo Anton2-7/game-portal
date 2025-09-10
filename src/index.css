@@ -73,9 +73,6 @@ nav {
 nav .brand-logo {
   position: relative;
 }
-img {
-  max-height: 206px;
-}
 
 .card {
   overflow: hidden;

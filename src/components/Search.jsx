@@ -9,9 +9,7 @@ class Search extends React.Component {
     isOpen: false
   };
 
-  handleFilter = (event) => {
 
-  }
 
   toggleSearch = () => {
     this.setState((prevState) => ({
@@ -20,7 +18,7 @@ class Search extends React.Component {
     }));
   };
 
- handleKey = (e) => {
+  handleKey = (e) => {
     if (e.key === "Enter") {
       this.props.onSearch(this.state.search);
     }
@@ -35,6 +33,13 @@ class Search extends React.Component {
 
 
   render() {
+    const { location } = this.props;
+
+
+    if (location.pathname === "/platforms") {
+      return null;
+    }
+
     const { search, isOpen } = this.state;
 
     return (
@@ -43,29 +48,29 @@ class Search extends React.Component {
           id="search"
           className={`validate ${isOpen ? "show" : ""} `}
           placeholder="Поиск"
-          type="text" 
+          type="text"
           value={search}
           onChange={this.handleChange}
           onKeyDown={this.handleKey}
         />
-        {(isOpen === true) ?  <button
+        {(isOpen === true) ? <button
           className="search-btn"
           onClick={this.toggleSearch}
           type="button"
           datatype="all"
         >
-         <img className="Закрыть" src={CloseBtn} alt="Закрыть" />
+          <img className="Закрыть" src={CloseBtn} alt="Закрыть" />
         </button>
-         :  <button
-          className="search-btn"
-          onClick={this.toggleSearch}
-          type="button"
-        >
-         <img className="SearchIco" src={SearchIco} alt="Поиск" />
-        </button> }
+          : <button
+            className="search-btn"
+            onClick={this.toggleSearch}
+            type="button"
+          >
+            <img className="SearchIco" src={SearchIco} alt="Поиск" />
+          </button>}
       </div>
     );
   }
 }
 
-export { Search };
+export { Search }

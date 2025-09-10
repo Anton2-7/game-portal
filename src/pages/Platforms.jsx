@@ -18,7 +18,6 @@ export function Platforms() {
   const [totalPages, setTotalPages] = useState(1);
 
   const platformIdFromUrl = searchParams.get("platform");
-
   // Загружаем список платформ
   const loadAllPlatforms = async () => {
     setLoading(true);
@@ -32,6 +31,7 @@ export function Platforms() {
       setLoading(false);
     }
   };
+
 
   // Загружаем игры для выбранной платформы с пагинацией
   const loadGamesForPlatform = async (platformId, page = 1) => {

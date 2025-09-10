@@ -1,14 +1,18 @@
 import { useState } from "react";
 import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
-import { Platorms } from "../pages/Platforms";
 import { Link } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+
 function Header(props) {
   const [isOpen, setOpen] = useState(false);
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
   };
+
+  const location = useLocation();
+
 
   return (
     <>
@@ -25,7 +29,7 @@ function Header(props) {
               Игровой Portal
             </a>
           </div>
-          <Search onSearch={props.onSearch}/>
+          <Search onSearch={props.onSearch} location={location} />
           <ul className="right hide-on-med-and-down">
             <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
             <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
