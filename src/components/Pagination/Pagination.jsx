@@ -12,7 +12,7 @@ function Pagination({ page, totalPages, onPageChange }) {
     };
 
     return (
-        <div className="pagination" style={{ marginTop: 20, display: "flex", alignItems: "center", gap: "10px" }}>
+        <div className="pagination" style={{ marginTop: 20, display: "flex", alignItems: "center", gap: "10px", justifyContent: 'center' }}>
             {/* Кнопка назад */}
             <button className="pagination-btn" onClick={() => onPageChange(page - 1)} disabled={page === 1}>
                 Назад

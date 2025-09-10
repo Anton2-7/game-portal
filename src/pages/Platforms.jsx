@@ -110,10 +110,14 @@ export function Platforms() {
               <div key={g.id} className="game-card">
                 <div className="card-columns">
                   <div className="card">
-                    <Link to={`../games/${g.id}`}><h4 className="platform-title">{g.name}</h4></Link>
-                    {g.background_image && (
-                      <img src={g.background_image} alt={g.name} style={{ width: "100%" }} />
-                    )}
+                    <div className="card-media">
+                      <div className="card-media__wrapper">
+                        <Link to={`../games/${g.id}`}><h4 className="platform-title">{g.name}</h4></Link>
+                        {g.background_image && (
+                          <img src={g.background_image} alt={g.name} style={{ width: "100%" }} />
+                        )}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -130,17 +134,23 @@ export function Platforms() {
         <div className="platforms">
           {platforms.map((p, id) => (
             <div className="games" key={id}>
-              <div className="card-columns" key={p.id}>
-                <div className="card-platfroms">
-                  <Link to={`?platform=${p.id}`}><h4 className="platform-title">{p.name}</h4></Link>
-                  {p.image_background && (
-                    <img
-                      src={p.image_background}
-                      alt={p.name}
-                      style={{ width: "100%", marginBottom: 10 }}
-                    />
-                  )}
-                  <p>Всего игр: {p.games_count}</p>
+              <div className="game-card" key={p.id}>
+                <div className="card-columns">
+                  <div className="card">
+                    <div className="card-media">
+                      <div className="card-media__wrapper-li">
+                        <Link to={`?platform=${p.id}`}><h4 className="platform-title">{p.name}</h4></Link>
+                        {p.image_background && (
+                          <img
+                            src={p.image_background}
+                            alt={p.name}
+                            style={{ width: "100%", marginBottom: 10 }}
+                          />
+                        )}
+                        <p>Всего игр: {p.games_count}</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

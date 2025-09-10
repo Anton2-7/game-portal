@@ -33,6 +33,22 @@
   border-radius: 15px;
   margin-bottom: 20px;
 }
+.card-media {
+  width: 100%;
+  overflow: hidden;
+}
+.card-media__wrapper {
+  width: 100%;
+  height: 0;
+  padding-bottom: 56.25%;
+  overflow: hidden;
+}
+.card-media__wrapper-li {
+  width: 100%;
+  height: 0;
+  padding-bottom: 90%;
+  overflow: hidden;
+}
 .platform-filter {
   display: flex;
   align-items: center;

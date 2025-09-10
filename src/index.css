@@ -79,6 +79,7 @@ nav .brand-logo {
   box-shadow: 0 10px 20px 0 rgba(0, 0, 0, 0.07);
   border-radius: 10px;
   box-sizing: border-box;
+  color: #b71c1c;
 }
 .card-image {
   position: relative;

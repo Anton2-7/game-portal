@@ -3,9 +3,10 @@ import { Header } from "./layouts/Header";
 import { Footer } from "./layouts/Footer";
 import { Main } from "./layouts/Main";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import { Platforms } from "./pages/Platforms";
 import { GamePage } from "./pages/GamePage";
+import { PlatformCards } from "./components/сards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
+
 function App() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true); // Изначально true, чтобы показать прелоадер
@@ -54,7 +55,7 @@ function App() {
           <Route
             path="/platforms"
             searchGames={searchGames}
-            element={<Platforms />}
+            element={<PlatformCards />}
           />
           <Route
             path="/games/:id"

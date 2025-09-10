@@ -70,28 +70,29 @@ function GamePage() {
           Нет изображения
         </div>
       )}
+      <div className="gamePage-wrapper">
+        <p><strong>Дата релиза:</strong> {game.released || 'Не указана'}</p>
+        <p><strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : 'Нет рейтинга'}</p>
 
-      <p><strong>Дата релиза:</strong> {game.released || 'Не указана'}</p>
-      <p><strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : 'Нет рейтинга'}</p>
+        <p><strong>Платформы:</strong>{' '}
+          {Array.isArray(game.platforms)
+            ? game.platforms.map((p) => p.platform.name).join(', ')
+            : 'Не указаны'}
+        </p>
 
-      <p><strong>Платформы:</strong>{' '}
-        {Array.isArray(game.platforms)
-          ? game.platforms.map((p) => p.platform.name).join(', ')
-          : 'Не указаны'}
-      </p>
+        <p><strong>Жанры:</strong>{' '}
+          {Array.isArray(game.genres)
+            ? game.genres.map((g) => g.name).join(', ')
+            : 'Не указаны'}
+        </p>
 
-      <p><strong>Жанры:</strong>{' '}
-        {Array.isArray(game.genres)
-          ? game.genres.map((g) => g.name).join(', ')
-          : 'Не указаны'}
-      </p>
-
-      {game.description_raw && (
-        <div>
-          <h3>Описание</h3>
-          <p>{game.description_raw}</p>
-        </div>
-      )}
+        {game.description_raw && (
+          <div>
+            <h3>Описание</h3>
+            <p>{game.description_raw}</p>
+          </div>
+        )}
+      </div>
 
       <button
         onClick={() => window.history.back()}
