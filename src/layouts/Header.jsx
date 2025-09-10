@@ -5,11 +5,24 @@ import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 
 function Header(props) {
+
+
+
   const [isOpen, setOpen] = useState(false);
+
+
+
+  window.onclick = function (event) {
+    if (!event.target.matches('.burger')) {
+      setOpen(false);
+    }
+  }
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
   };
+
+
 
   const location = useLocation();
 
@@ -41,7 +54,7 @@ function Header(props) {
           <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}>
             <ul className="burger-list">
               <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
-              <li><a href="badges.html"><i className="material-icons">обзоры</i></a></li>
+              <li><a href="/platforms"><i className="material-icons">платформы</i></a></li>
               <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
             </ul>
           </div>

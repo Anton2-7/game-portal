@@ -15,6 +15,7 @@
   grid-column: 5;
   text-align: left;
 }
+
 .platform-title {
   font-size: 1.5rem;
   margin-bottom: 0.5rem;
@@ -52,7 +53,6 @@
 .platform-filter {
   display: flex;
   align-items: center;
-  flex-direction: row;
 }
 .platforms__games {
   text-align: left;

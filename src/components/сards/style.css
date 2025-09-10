@@ -31,7 +31,11 @@
     gap: 10px;
   }
 }
-
+.platform__clear-btn {
+  margin-left: 16px;
+  cursor: pointer;
+  color: black;
+}
 .platform-title {
   font-size: 20px;
   font-weight: 600;

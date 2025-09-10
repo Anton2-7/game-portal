@@ -94,69 +94,13 @@ function PlatformCards() {
 
     return (
         <div>
-            <div className="platform-filter" style={{ display: "flex", gap: 12 }}>
-                <p>Фильтр по платформе:</p>
-                <RadioInput onSelect={handleSelectPlatform} onClear={handleClear} />
+            <div className="platform-filter" style={{ display: "flex", alignItems: "center", textAlign: "left" }}>
+                <p style={{ marginRight: '20px' }}>Фильтр по платформе: </p>
+                <RadioInput onSelect={handleSelectPlatform} onClear={handleClear} style={{ marginRight: '10px' }} />
+                <p onClick={handleClear} className="platform__clear-btn">
+                    Очистить
+                </p>
             </div>
-            <p onClick={handleClear} style={{ cursor: "pointer", color: "blue" }}>
-                Очистить
-            </p>
-
-            {/* {selectedPlatform ? (
-                <div>
-                    <h2 className="platform-title">{selectedPlatform.name}</h2>
-                    <div className="games">
-                        {games.map((g) => (
-                            <div key={g.id} className="game-card">
-                                <div className="card-columns">
-                                    <div className="card">
-                                        <div className="card-media">
-                                            <div className="card-media__wrapper">
-                                                <Link to={`../games/${g.id}`}><h4 className="platform-title">{g.name}</h4></Link>
-                                                {g.background_image && (
-                                                    <img src={g.background_image} alt={g.name} style={{ width: "100%" }} />
-                                                )}
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                    <Pagination
-                        page={page}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
-
-                </div>
-            ) : (
-                <div className="platforms">
-                    {platforms.map((p, id) => (
-                        <div className="games" key={id}>
-                            <div className="game-card" key={p.id}>
-                                <div className="card-columns">
-                                    <div className="card">
-                                        <div className="card-media">
-                                            <div className="card-media__wrapper-li">
-                                                <Link to={`?platform=${p.id}`}><h4 className="platform-title">{p.name}</h4></Link>
-                                                {p.image_background && (
-                                                    <img
-                                                        src={p.image_background}
-                                                        alt={p.name}
-                                                        style={{ width: "100%", marginBottom: 10 }}
-                                                    />
-                                                )}
-                                                <p>Всего игр: {p.games_count}</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )} */}
 
             {selectedPlatform ? (
                 <div>
