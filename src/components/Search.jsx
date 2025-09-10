@@ -1,6 +1,6 @@
 import React from "react";
 import SearchIco from "../images/icons8-search.svg";
-import CloseBtn from "../images/close_10015296.png"
+import CloseBtn from "../images/icons8-close-24.svg"
 
 class Search extends React.Component {
   state = {

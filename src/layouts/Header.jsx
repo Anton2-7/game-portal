@@ -17,34 +17,36 @@ function Header(props) {
   return (
     <>
       <nav className="red darken-4">
-        <div className="nav-wrapper">
-          <div className="logo-wrapper">
-            <button
-              className={`burger ${isOpen ? "open" : ""}`}
-              onClick={toggleMenu}
-              aria-label="Открыть меню"
-            ></button>
-            <img className="soldierIcn" src={SoldierIcon} alt="Солдат" />
-            <a href="/" className="brand-logo">
-              Игровой Portal
-            </a>
+        <div className="container">
+          <div className="nav-wrapper">
+            <div className="logo-wrapper">
+              <button
+                className={`burger ${isOpen ? "open" : ""}`}
+                onClick={toggleMenu}
+                aria-label="Открыть меню"
+              ></button>
+              <img className="soldierIcn" src={SoldierIcon} alt="Солдат" />
+              <a href="/" className="brand-logo">
+                Игровой Portal
+              </a>
+            </div>
+            <Search onSearch={props.onSearch} location={location} />
+            <ul className="right hide-on-med-and-down">
+              <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
+              <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
+              <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
+            </ul>
           </div>
-          <Search onSearch={props.onSearch} location={location} />
-          <ul className="right hide-on-med-and-down">
-            <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
-            <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
-            <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
-          </ul>
-        </div>
 
-        <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}>
-          <ul className="burger-list">
-            <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
-            <li><a href="badges.html"><i className="material-icons">обзоры</i></a></li>
-            <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
-          </ul>
+          <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}>
+            <ul className="burger-list">
+              <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
+              <li><a href="badges.html"><i className="material-icons">обзоры</i></a></li>
+              <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
+            </ul>
+          </div>
         </div>
-      </nav>
+      </nav >
     </>
   );
 }
