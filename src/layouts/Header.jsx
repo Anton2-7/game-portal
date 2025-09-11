@@ -3,6 +3,7 @@ import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import flag from "../images/flag.gif"
 
 function Header(props) {
 
@@ -22,9 +23,11 @@ function Header(props) {
     setOpen((prev) => !prev);
   };
 
+  const isMobile = window.innerWidth <= 768;
 
 
   const location = useLocation();
+
 
 
   return (
@@ -38,24 +41,27 @@ function Header(props) {
                 onClick={toggleMenu}
                 aria-label="Открыть меню"
               ></button>
-              <img className="soldierIcn" src={SoldierIcon} alt="Солдат" />
+              {location.pathname !== "/" && isMobile ? (
+                <img src={flag} alt="flag" className="flag-img" />
+              ) : (
+                <img src={SoldierIcon} alt="logo" className="logo-img" />
+              )}
+
               <a href="/" className="brand-logo">
                 Игровой Portal
               </a>
             </div>
-            <Search onSearch={props.onSearch} location={location} />
-            <ul className="right hide-on-med-and-down">
-              <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
+            <ul className="menu-list">
+              <Search onSearch={props.onSearch} location={location} />
+              <li><Link to="/"><i className="material-icons">игры</i></Link></li>
               <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
-              <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
             </ul>
           </div>
 
           <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}>
             <ul className="burger-list">
-              <li><a href="sass.html"><i className="material-icons">новости</i></a></li>
+              <li><a href="/"><i className="material-icons">игры</i></a></li>
               <li><a href="/platforms"><i className="material-icons">платформы</i></a></li>
-              <li><a href="collapsible.html"><i className="material-icons">статьи</i></a></li>
             </ul>
           </div>
         </div>

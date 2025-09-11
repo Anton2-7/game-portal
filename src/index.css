@@ -67,7 +67,11 @@ nav {
 .nav-wrapper {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+}
+
+.menu-list {
+  position: relative;
+  display: flex;
 }
 
 nav .brand-logo {
@@ -125,8 +129,12 @@ nav .brand-logo {
   transform: translateY(0);
   pointer-events: auto;
 }
-
+input:focus {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
 .burger-list {
+  text-align: left;
   display: flex;
   flex-direction: column;
 }
@@ -221,7 +229,7 @@ button:focus {
 #searchM {
   margin: 0 0 0 10px !important;
   font-size: 1.3rem !important;
-  color: #92959c;
+  color: #000000;
   font-weight: 600;
   display: flex;
 }
@@ -254,18 +262,9 @@ button:focus {
   order: -1;
   position: relative;
   display: flex;
+  height: 30px;
+  width: 30px;
   align-items: center;
-}
-
-.search-icon::before {
-  content: "";
-  height: 100%;
-  width: 20px;
-  background-color: #92959c;
-  display: inline-flex;
-  color: #000;
-  left: 0;
-  position: relative;
 }
 
 #searchM {
@@ -297,9 +296,9 @@ input[type="text"] {
 .clearSearchBtn::before {
   content: " ";
   height: 30px;
-  width: 2px;
+  width: 1px;
   position: relative;
-  background-color: #92959c;
+  background-color: #000000;
   display: inline-flex;
   align-items: center;
   right: 8px;
@@ -364,7 +363,7 @@ input[type="text"] {
   cursor: pointer;
   background: none;
   font-weight: 600;
-  color: #92959c;
+  color: #000000;
   align-items: center;
   display: flex;
   font-size: 1.2rem;

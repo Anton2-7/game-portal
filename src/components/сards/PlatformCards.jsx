@@ -25,6 +25,8 @@ function PlatformCards() {
             const res = await fetch(`https://api.rawg.io/api/platforms?key=${API_KEY}`);
             const data = await res.json();
             setPlatforms(data.results || []);
+            console.log("Загруженные игры:", data);
+
         } catch (e) {
             console.error("Ошибка загрузки платформ:", e);
         } finally {
@@ -90,58 +92,82 @@ function PlatformCards() {
         }
     }, [platforms, platformIdFromUrl, page]);
 
-    if (loading) return <Preloader />;
 
     return (
-        <div>
-            <div className="platform-filter" style={{ display: "flex", alignItems: "center", textAlign: "left" }}>
-                <p style={{ marginRight: '20px' }}>Фильтр по платформе: </p>
-                <RadioInput onSelect={handleSelectPlatform} onClear={handleClear} style={{ marginRight: '10px' }} />
-                <p onClick={handleClear} className="platform__clear-btn">
-                    Очистить
-                </p>
-            </div>
+        <main className="container content">
+            {loading ? (
+                <Preloader />
+            ) : (
+                <>
+                    <div
+                        className="platform-filter"
+                        style={{ display: "flex", alignItems: "center", textAlign: "left" }}
+                    >
+                        <p style={{ marginRight: "20px" }}>Фильтр по платформе: </p>
+                        <RadioInput
+                            onSelect={handleSelectPlatform}
+                            onClear={handleClear}
+                            style={{ marginRight: "10px" }}
+                        />
+                        <p onClick={handleClear} className="platform__clear-btn">
+                            Очистить
+                        </p>
+                    </div>
 
-            {selectedPlatform ? (
-                <div>
-                    <div className="platform-title">{selectedPlatform.name}</div>
-                    <div className='grid'>
-                        {games.map(item => (
-                            <div key={item.id} className='cardd'>
-                                <Link to={`../games/${item.id}`}>
-                                    {item.background_image && (
-                                        <img className="platform-img" src={item.background_image} alt={item.name} style={{ width: '100%' }} />
-                                    )}
-                                    <div className='platform-content'>
-                                        <h3 className="platform-title">{item.name}</h3>
+                    {selectedPlatform ? (
+                        <div>
+                            <div className="platform-title">{selectedPlatform.name}</div>
+                            <div className="grid">
+                                {games.map((item) => (
+                                    <div key={item.id} className="cardd">
+                                        <Link to={`../games/${item.id}`}>
+                                            {item.background_image && (
+                                                <img
+                                                    className="platform-img"
+                                                    src={item.background_image}
+                                                    alt={item.name}
+                                                    style={{ width: "100%" }}
+                                                />
+                                            )}
+                                            <div className="platform-content">
+                                                <h3 className="platform-title">{item.name}</h3>
+                                            </div>
+                                        </Link>
+                                    </div>
+                                ))}
+                            </div>
+                            <Pagination
+                                page={page}
+                                totalPages={totalPages}
+                                onPageChange={handlePageChange}
+                            />
+                        </div>
+                    ) : (
+                        <div className="grid">
+                            {platforms.map((item) => (
+                                <Link to={`?platform=${item.id}`} key={item.id}>
+                                    <h4 className="platform-title">{item.name}</h4>
+                                    <div className="cardd">
+                                        <div className="image-wrapper">
+                                            <img
+                                                className="platform-img"
+                                                src={item.image_background}
+                                                alt={item.name}
+                                            />
+                                        </div>
+                                        <div className="platform-content">
+                                            <p>Всего игр: {item.games_count}</p>
+                                        </div>
                                     </div>
                                 </Link>
-                            </div>
-                        ))}
-                    </div>
-                    <Pagination
-                        page={page}
-                        totalPages={totalPages}
-                        onPageChange={handlePageChange}
-                    />
-                </div>) : (
-                <div className='grid'>
-                    {platforms.map(item => (
-                        <Link to={`?platform=${item.id}`} key={item.id}><h4 className="platform-title">{item.name}</h4>
-                            <div key={item.id} className='cardd'>
-                                <div className='image-wrapper'>
-                                    <img className="platform-img" src={item.image_background} alt={item.name} />
-                                </div>
-                                <div className='platform-content'>
-                                    <p>Всего игр: {item.games_count}</p>
-                                </div>
-
-                            </div>
-                        </Link>
-                    ))}
-                </div>
+                            ))}
+                        </div>
+                    )}
+                </>
             )}
-        </div>
+        </main>
+
+
     );
 }
 

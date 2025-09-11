@@ -38,31 +38,25 @@ function App() {
   return (
     <>
       <Header onSearch={searchGames} />
-      <main className="container content">
-        <ScrollToTop />
+      <ScrollToTop />
 
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <Main
-                gameSearch={games}
-                loading={loading}
-                onSearch={searchGames}
-              />
-            }
-          />
-          <Route
-            path="/platforms"
-            searchGames={searchGames}
-            element={<PlatformCards />}
-          />
-          <Route
-            path="/games/:id"
-            element={<GamePage loading={loading} />}
-          ></Route>
-        </Routes>
-      </main>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main gameSearch={games} loading={loading} onSearch={searchGames} />
+          }
+        />
+        <Route
+          path="/platforms"
+          searchGames={searchGames}
+          element={<PlatformCards />}
+        />
+        <Route
+          path="/games/:id"
+          element={<GamePage loading={loading} />}
+        ></Route>
+      </Routes>
       <Footer />
     </>
   );

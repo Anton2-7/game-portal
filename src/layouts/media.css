@@ -9,16 +9,18 @@
     text-align: center;
   }
   .r-searchM {
-    margin-top: 69px !important;
     display: flex !important;
     align-items: center;
-    border: 3px solid #92959c!important;
-    padding: 5px 15px 5px 15px !important;
+    border: 1px solid #000000;
+    padding: 5px 15px 5px 15px;
   }
   .games {
     margin-top: 15px !important;
   }
   .r-search {
+    display: none !important;
+  }
+  .menu-list {
     display: none !important;
   }
   nav ul {
