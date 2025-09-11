@@ -143,7 +143,8 @@ function GamePage() {
             )}
           </div>
           <h5>Веб-сайт</h5>
-          <a href={game.website}>{game.website}</a>
+          {game.website ? (<a href={game.website}>{game.website}</a>
+          ) : (<p>Ссылка отсутвует</p>)}
           <h5>Описание:</h5>
           <p>
             <strong>Дата релиза:</strong> {game.released || "Не указана"}
