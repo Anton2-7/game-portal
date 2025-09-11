@@ -1,4 +1,3 @@
-// src/pages/GameDetailPage.jsx
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { Preloader } from "../components/Preloader";
@@ -9,6 +8,13 @@ function GamePage() {
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const ratingStyles = {
+    exceptional: { label: "Исключительный", color: "gold" },
+    recommended: { label: "Рекомендуемый", color: "green" },
+    meh: { label: "Средний", color: "gray" },
+    skip: { label: "Пропустить", color: "red" },
+  };
 
   useEffect(() => {
     setLoading(true);
@@ -23,101 +29,145 @@ function GamePage() {
         }
         return response.json();
       })
-      .then((data) => {
-        setGame(data);
-        console.log("Game data:", data);
-      })
-      .catch((err) => {
-        console.error('Ошибка при загрузке игры:', err);
-        setError(err.message);
-      })
+      .then((data) => setGame(data))
+      .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
   }, [id]);
 
+  if (loading) return <Preloader />;
+  if (error) return <p>Ошибка: {error}</p>;
+  if (!game) return <p>Данные не найдены</p>;
+  console.log("Fetched game data:", game);
 
   return (
     <div
       className="container-background"
       style={{
-        backgroundImage:
-          !loading && game
-            ? `url(${game.background_image_additional || game.background_image})`
+        backgroundImage: game.background_image_additional
+          ? `url(${game.background_image_additional})`
+          : game.background_image
+            ? `url(${game.background_image})`
             : "none",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        height: "100%",
+        minHeight: "100vh",
       }}
     >
-      {loading ? (
-        <Preloader />
-      ) : game ? ( // Проверяем, что game существует
-        <div
-          className="container-full"
-          style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}
-        >
-          <h1 className="GamePage__title">{game.name}</h1>
+      <div
+        className="container-full"
+        style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}
+      >
+        <h1 className="GamePage__title">{game.name}</h1>
 
-          {game.background_image ? (
-            <img
-              src={game.background_image}
-              alt={game.name}
-              style={{
-                width: "100%",
-                height: "400px",
-                objectFit: "cover",
-                objectPosition: "top",
-                borderRadius: "8px",
-                marginBottom: "16px",
-              }}
-            />
-          ) : (
-            <div
-              style={{
-                width: "100%",
-                height: "400px",
-                backgroundColor: "#ccc",
-                borderRadius: "8px",
-                marginTop: "16px",
-                marginBottom: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
-              Нет изображения
+        {game.background_image ? (
+          <img
+            src={game.background_image}
+            alt={game.name}
+            style={{
+              width: "100%",
+              height: "400px",
+              objectFit: "cover",
+              objectPosition: "top",
+              borderRadius: "8px",
+              marginBottom: "16px",
+            }}
+          />
+        ) : (
+          <div
+            style={{
+              width: "100%",
+              height: "400px",
+              backgroundColor: "#ccc",
+              borderRadius: "8px",
+              marginTop: "16px",
+              marginBottom: "16px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            Нет изображения
+          </div>
+        )}
+
+        <div className="gamePage-wrapper">
+          <h5>Разработчик:</h5>
+          {game.developers && game.developers.length > 0 ? (
+            <div className="developer">
+              <p>{game.developers[0].name}</p>
+              {game.developers[0].image_background && (
+                <img
+                  src={game.developers[0].image_background}
+                  width="200"
+                  alt={game.developers[0].name}
+                />
+              )}
             </div>
+          ) : (
+            <p>Нет информации</p>
           )}
 
-          <div className="gamePage-wrapper">
-            <p>
-              <strong>Дата релиза:</strong> {game.released || "Не указана"}
-            </p>
-            <p>
-              <strong>Рейтинг:</strong>{" "}
-              {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
-            </p>
+          <h5>Оценки:</h5>
+          {game.ratings && game.ratings.length > 0 ? (
+            <div className="ranking">
+              {game.ratings.map((g, title) => {
+                const style = ratingStyles[g.title] || {
+                  label: g.title,
+                  color: "black",
+                };
+                return (
+                  <div className="ranking-item" key={g.title} style={{ marginBottom: "8px" }}>
+                    <div style={{ color: style.color, fontWeight: "bolder" }}>
+                      {style.label}:
+                    </div>
+                    <div>Количество: {g.count}</div>
+                    <div>Процент: {g.percent}%</div>
+                  </div>
+                );
+              })}
+            </div>
+          ) : (
+            <p>Нет оценок</p>
+          )}
 
-            <p>
-              <strong>Платформы:</strong>{" "}
-              {Array.isArray(game.platforms)
-                ? game.platforms.map((p) => p.platform.name).join(", ")
-                : "Не указаны"}
-            </p>
-
-            <p>
-              <strong>Жанры:</strong>{" "}
-              {Array.isArray(game.genres)
-                ? game.genres.map((g) => g.name).join(", ")
-                : "Не указаны"}
-            </p>
-
-            {game.description_raw && (
-              <div>
-                <h3>Описание</h3>
-                <p>{game.description_raw}</p>
-              </div>
+          <h5>Теги:</h5>
+          <div className="tags">
+            {game.tags && game.tags.length > 0 ? (
+              game.tags.map((tag) => (
+                <a key={tag.id} href="#">
+                  {tag.name}
+                </a>
+              ))
+            ) : (
+              <p>Нет тегов</p>
             )}
           </div>
+          <h5>Веб-сайт</h5>
+          <a href={game.website}>{game.website}</a>
+          <h5>Описание:</h5>
+          <p>
+            <strong>Дата релиза:</strong> {game.released || "Не указана"}
+          </p>
+          <p>
+            <strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
+          </p>
+          <p>
+            <strong>Оценка на Metacritic:</strong> {game.metacritic || "Нет оценки"}
+          </p>
+          <p>
+            <strong>Платформы:</strong>{" "}
+            {Array.isArray(game.platforms)
+              ? game.platforms.map((p) => p.platform.name).join(", ")
+              : "Не указаны"}
+          </p>
+          <p>
+            <strong>Жанры:</strong>{" "}
+            {Array.isArray(game.genres)
+              ? game.genres.map((g) => g.name).join(", ")
+              : "Не указаны"}
+          </p>
+
+          {game.description_raw && <p>{game.description_raw}</p>}
 
           <button
             onClick={() => window.history.back()}
@@ -126,13 +176,9 @@ function GamePage() {
             ← Назад к списку
           </button>
         </div>
-      ) : (
-        <p>Данные не найдены</p>
-      )}
+      </div>
     </div>
   );
-
-
 }
 
 export { GamePage };
