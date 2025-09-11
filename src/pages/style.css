@@ -152,7 +152,6 @@ textarea.materialize-textarea {
   box-sizing: content-box !important;
   width: 100% !important;
   border: none !important;
-  border-bottom: 1px solid #9e9e9e !important;
   box-shadow: none !important;
   background-color: transparent !important;
   transition: all 0.3s !important;
