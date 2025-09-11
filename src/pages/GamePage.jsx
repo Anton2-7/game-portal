@@ -1,5 +1,5 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { Preloader } from "../components/Preloader";
 import "./style.css";
 
@@ -24,9 +24,7 @@ function GamePage() {
 
     fetch(apiUrl)
       .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Ошибка: ${response.status}`);
-        }
+        if (!response.ok) throw new Error(`Ошибка: ${response.status}`);
         return response.json();
       })
       .then((data) => setGame(data))
@@ -37,7 +35,6 @@ function GamePage() {
   if (loading) return <Preloader />;
   if (error) return <p>Ошибка: {error}</p>;
   if (!game) return <p>Данные не найдены</p>;
-  console.log("Fetched game data:", game);
 
   return (
     <div
@@ -59,6 +56,7 @@ function GamePage() {
       >
         <h1 className="GamePage__title">{game.name}</h1>
 
+        {/* Главное изображение */}
         {game.background_image ? (
           <img
             src={game.background_image}
@@ -91,8 +89,9 @@ function GamePage() {
         )}
 
         <div className="gamePage-wrapper">
+          {/* Разработчики */}
           <h5>Разработчик:</h5>
-          {game.developers && game.developers.length > 0 ? (
+          {game.developers?.length > 0 ? (
             <div className="developer">
               <p>{game.developers[0].name}</p>
               {game.developers[0].image_background && (
@@ -107,16 +106,21 @@ function GamePage() {
             <p>Нет информации</p>
           )}
 
+          {/* Оценки */}
           <h5>Оценки:</h5>
-          {game.ratings && game.ratings.length > 0 ? (
+          {game.ratings?.length > 0 ? (
             <div className="ranking">
-              {game.ratings.map((g, title) => {
+              {game.ratings.map((g, index) => {
                 const style = ratingStyles[g.title] || {
                   label: g.title,
                   color: "black",
                 };
                 return (
-                  <div className="ranking-item" key={g.title} style={{ marginBottom: "8px" }}>
+                  <div
+                    className="ranking-item"
+                    key={`${g.title}-${index}`}
+                    style={{ marginBottom: "8px" }}
+                  >
                     <div style={{ color: style.color, fontWeight: "bolder" }}>
                       {style.label}:
                     </div>
@@ -130,9 +134,10 @@ function GamePage() {
             <p>Нет оценок</p>
           )}
 
+          {/* Теги */}
           <h5>Теги:</h5>
           <div className="tags">
-            {game.tags && game.tags.length > 0 ? (
+            {game.tags?.length > 0 ? (
               game.tags.map((tag) => (
                 <a key={tag.id} href="#">
                   {tag.name}
@@ -142,32 +147,41 @@ function GamePage() {
               <p>Нет тегов</p>
             )}
           </div>
+
+          {/* Сайт */}
           <h5>Веб-сайт</h5>
-          {game.website ? (<a href={game.website}>{game.website}</a>
-          ) : (<p>Ссылка отсутвует</p>)}
+          {game.website ? (
+            <a href={game.website} target="_blank" rel="noopener noreferrer">
+              {game.website}
+            </a>
+          ) : (
+            <p>Ссылка отсутствует</p>
+          )}
+
+          {/* Информация */}
           <h5>Описание:</h5>
           <p>
             <strong>Дата релиза:</strong> {game.released || "Не указана"}
           </p>
           <p>
-            <strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
+            <strong>Рейтинг:</strong>{" "}
+            {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
           </p>
           <p>
-            <strong>Оценка на Metacritic:</strong> {game.metacritic || "Нет оценки"}
+            <strong>Оценка на Metacritic:</strong>{" "}
+            {game.metacritic || "Нет оценки"}
           </p>
           <p>
             <strong>Платформы:</strong>{" "}
-            {Array.isArray(game.platforms)
-              ? game.platforms.map((p) => p.platform.name).join(", ")
-              : "Не указаны"}
+            {game.platforms?.map((p) => p.platform.name).join(", ") ||
+              "Не указаны"}
           </p>
           <p>
             <strong>Жанры:</strong>{" "}
-            {Array.isArray(game.genres)
-              ? game.genres.map((g) => g.name).join(", ")
-              : "Не указаны"}
+            {game.genres?.map((g) => g.name).join(", ") || "Не указаны"}
           </p>
 
+          {/* Описание */}
           {game.description_raw && <p>{game.description_raw}</p>}
 
           <button
