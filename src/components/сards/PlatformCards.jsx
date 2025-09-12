@@ -5,10 +5,10 @@ import { RadioInput } from "../RadioInput";
 import "./style.css";
 import { Pagination } from "../Pagination/Pagination";
 
-const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
+
 const PAGE_SIZE = 20; // Количество игр на страницу
 
-function PlatformCards() {
+function PlatformCards({ API_KEY }) {
     const [searchParams, setSearchParams] = useSearchParams();
     const [platforms, setPlatforms] = useState([]);
     const [loading, setLoading] = useState(true);

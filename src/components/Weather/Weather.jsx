@@ -3,6 +3,9 @@ import './style.css';
 import gpsIcon from "../../images/gps-2.png";
 import { useSearchParams } from "react-router-dom";
 
+const API_KEY_WEATHER = process.env.REACT_APP_WHEATHER_API_KEY;
+
+
 function Weather() {
     const [coords, setCoords] = useState(null);
     const [weather, setWeather] = useState(null);
@@ -12,7 +15,7 @@ function Weather() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const API_KEY = "d463a889c5bf1f92dc24f0f16a3d68f2";
+
     const units = "metric";
     const lang = "ru";
 
@@ -20,7 +23,7 @@ function Weather() {
     const fetchWeatherByCoords = async (lat, lon) => {
         try {
             const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=${units}&lang=${lang}`
+                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY_WEATHER}&units=${units}&lang=${lang}`
             );
             if (!res.ok) throw new Error("Ошибка запроса погоды");
             const data = await res.json();
@@ -37,7 +40,7 @@ function Weather() {
     const fetchWeatherByCity = async (city) => {
         try {
             const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=${units}&lang=${lang}`
+                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY_WEATHER}&units=${units}&lang=${lang}`
             );
             if (!res.ok) throw new Error("Город не найден");
             const data = await res.json();

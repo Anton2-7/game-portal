@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Preloader } from "../components/Preloader";
 import "./style.css";
 
-function GamePage() {
+function GamePage({ API_KEY }) {
   const { id } = useParams();
   const [game, setGame] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -20,7 +20,7 @@ function GamePage() {
     setLoading(true);
     setError(null);
 
-    const apiUrl = `https://api.rawg.io/api/games/${id}?key=d8fc05cc67f04e5bbab96f5d93677084`;
+    const apiUrl = `https://api.rawg.io/api/games/${id}?key=${API_KEY}`;
 
     fetch(apiUrl)
       .then((response) => {

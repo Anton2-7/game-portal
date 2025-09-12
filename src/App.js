@@ -7,16 +7,17 @@ import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/сards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
 
+const API_KEY = process.env.REACT_APP_RAWG_KEY;
+
 function App() {
   const [games, setGames] = useState([]);
   const [loading, setLoading] = useState(true); // Изначально true, чтобы показать прелоадер
-
   // функция поиска игр
   const searchGames = async (query) => {
     setLoading(true);
     try {
       const res = await fetch(
-        `https://api.rawg.io/api/games?key=d8fc05cc67f04e5bbab96f5d93677084&search=${query}`
+        `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}`
       );
       const data = await res.json();
       setGames(data.results || []);
@@ -50,11 +51,11 @@ function App() {
         <Route
           path="/platforms"
           searchGames={searchGames}
-          element={<PlatformCards />}
+          element={<PlatformCards API_KEY={API_KEY} />}
         />
         <Route
           path="/games/:id"
-          element={<GamePage loading={loading} />}
+          element={<GamePage loading={loading} API_KEY={API_KEY} />}
         ></Route>
       </Routes>
       <Footer />
