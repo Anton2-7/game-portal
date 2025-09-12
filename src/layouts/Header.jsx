@@ -47,9 +47,9 @@ function Header(props) {
                 <img src={SoldierIcon} alt="logo" className="logo-img" />
               )}
 
-              <a href="/games" className="brand-logo">
+              <Link to="/game" className="brand-logo">
                 Игровой Portal
-              </a>
+              </Link>
             </div>
             <ul className="menu-list">
               <Search onSearch={props.onSearch} location={location} />
