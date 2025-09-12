@@ -47,7 +47,7 @@ function Header(props) {
                 <img src={SoldierIcon} alt="logo" className="logo-img" />
               )}
 
-              <a href="/" className="brand-logo">
+              <a href="/games" className="brand-logo">
                 Игровой Portal
               </a>
             </div>

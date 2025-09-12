@@ -43,7 +43,7 @@ function App() {
 
       <Routes>
         <Route
-          path="/"
+          path="/games"
           element={
             <Main gameSearch={games} loading={loading} onSearch={searchGames} />
           }
