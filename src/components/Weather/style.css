@@ -1,0 +1,118 @@
+.weather {
+  position: relative;
+  display: flex;
+  padding: 20px;
+  flex-direction: column;
+  max-width: 220px;
+}
+
+.wheather-location__btn,
+.weather-show__btn,
+.wheather-location__btn:focus,
+.weather-show__btn:focus {
+  color: white;
+  background-color: tomato;
+  border: 1px solid tomato;
+  border-radius: 5px;
+  padding: 8px;
+  margin-top: 20px;
+  align-items: center;
+  display: inline-flex;
+}
+.wheather-location__btn {
+  margin-top: 26px;
+}
+.wheather-location__btn:hover,
+.weather-show__btn:hover {
+  color: white !important;
+  cursor: pointer;
+
+  border: 1px solid rgb(241, 49, 15);
+  background-color: rgb(241, 49, 15) !important;
+}
+.weather-title {
+  margin-bottom: 10px;
+}
+.weather-input {
+  color: white;
+  min-width: 40px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.weather-temp {
+  font-size: 1rem;
+  margin-left: 10px;
+  border-radius: 20px;
+  font-weight: 600;
+}
+.weather-img {
+  position: relative;
+}
+.weather-content {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+.weather p {
+  font-size: 1rem;
+  margin: 0 !important;
+}
+.weather-name {
+  font-size: 1.5rem;
+  border-radius: 20px;
+  background-clip: text;
+  color: white;
+}
+.weather-wrapper {
+  display: flex;
+  align-items: center;
+}
+.wavve {
+  /* width: 100%; */
+  height: 100%;
+  bottom: 0px;
+  left: 0;
+  position: absolute;
+  display: block;
+}
+
+.wave-container {
+  position: relative;
+  width: 20px;
+  border-radius: 120px;
+  height: 20px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+.weather-show {
+  margin: 0 auto;
+}
+.weather-show__btn p {
+  margin-left: 10px !important;
+}
+.wave {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 200%; /* Двойная ширина для бесшовного повтора */
+  height: 100%; /* Используем полную высоту контейнера */
+}
+
+.wave1 {
+  animation: waveMove 10s linear infinite; /* медленнее */
+  transform: translateX(-25%); /* начальный сдвиг */
+}
+
+.wave2 {
+  animation: waveMove 15s linear infinite; /* быстрее */
+  transform: translateX(0);
+}
+
+@keyframes waveMove {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
