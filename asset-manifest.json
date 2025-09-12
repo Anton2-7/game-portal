@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/game-portal/static/css/main.3037a7c1.css",
-    "main.js": "/game-portal/static/js/main.27967192.js",
+    "main.js": "/game-portal/static/js/main.1031c7ab.js",
     "static/media/gps-2.png": "/game-portal/static/media/gps-2.e3684f1defd4c82fb2a6.png",
     "static/media/flag.gif": "/game-portal/static/media/flag.1cb1461a72c5853d04f7.gif",
     "static/media/searchGray_Icn.png": "/game-portal/static/media/searchGray_Icn.877b39a7554050f77f30.png",
@@ -9,10 +9,10 @@
     "static/media/icons8-search.svg": "/game-portal/static/media/icons8-search.7eaded9a84443763392d6314ac8295b6.svg",
     "static/media/icons8-close-24.svg": "/game-portal/static/media/icons8-close-24.76bb78202db678744ac8399aae66bf7e.svg",
     "main.3037a7c1.css.map": "/game-portal/static/css/main.3037a7c1.css.map",
-    "main.27967192.js.map": "/game-portal/static/js/main.27967192.js.map"
+    "main.1031c7ab.js.map": "/game-portal/static/js/main.1031c7ab.js.map"
   },
   "entrypoints": [
     "static/css/main.3037a7c1.css",
-    "static/js/main.27967192.js"
+    "static/js/main.1031c7ab.js"
   ]
 }
