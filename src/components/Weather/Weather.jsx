@@ -5,7 +5,6 @@ import { useSearchParams } from "react-router-dom";
 
 const API_KEY_WEATHER = process.env.REACT_APP_WHEATHER_API_KEY;
 
-
 function Weather() {
     const [coords, setCoords] = useState(null);
     const [weather, setWeather] = useState(null);
@@ -15,11 +14,9 @@ function Weather() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-
     const units = "metric";
     const lang = "ru";
 
-    // Функция запроса погоды по координатам
     const fetchWeatherByCoords = async (lat, lon) => {
         try {
             const res = await fetch(
@@ -29,14 +26,12 @@ function Weather() {
             const data = await res.json();
             setWeather(data);
             setError(null);
-            // Сохраняем город при получении данных
             setCity(data.name);
         } catch (err) {
-            setError(err.message);
+            setError("Не удалось определить погоду автоматически. Введите город вручную.");
         }
     };
 
-    // Функция запроса погоды по названию города
     const fetchWeatherByCity = async (city) => {
         try {
             const res = await fetch(
@@ -49,11 +44,10 @@ function Weather() {
             setError(null);
             setCity(data.name);
         } catch (err) {
-            setError(err.message);
+            setError("Город не найден. Попробуйте другой.");
         }
     };
 
-    // Функция установки города в localStorage и URL
     const setCity = (city) => {
         setCityInput(city);
         localStorage.setItem('selectedCity', city);
@@ -61,23 +55,19 @@ function Weather() {
         setSearchParams(searchParams);
     };
 
-    // Инициализация при загрузке компонента
     useEffect(() => {
-        // 1️⃣ Проверяем URL
         const cityFromUrl = searchParams.get('city');
         if (cityFromUrl) {
             fetchWeatherByCity(cityFromUrl);
             return;
         }
 
-        // 2️⃣ Проверяем localStorage
         const cityFromStorage = localStorage.getItem('selectedCity');
         if (cityFromStorage) {
             fetchWeatherByCity(cityFromStorage);
             return;
         }
 
-        // 3️⃣ Если ничего нет — используем геолокацию
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
                 (pos) => {
@@ -85,8 +75,14 @@ function Weather() {
                     setCoords({ latitude, longitude });
                     fetchWeatherByCoords(latitude, longitude);
                 },
-                () => console.log("Геолокация недоступна")
+                () => {
+                    setError("Не удалось получить геолокацию. Введите город вручную.");
+                    setShowInput(true);
+                }
             );
+        } else {
+            setError("Геолокация не поддерживается. Введите город вручную.");
+            setShowInput(true);
         }
     }, []);
 
@@ -99,63 +95,40 @@ function Weather() {
                         <h5 className="weather-temp">{Math.round(weather.main.temp)}°C</h5>
                     </div>
 
-
                     <div className="weather-content">
                         <img className="weather-img" alt="погода" src={`https://openweathermap.org/img/wn/${weather.weather[0]['icon']}@2x.png`} />
                         <p>{weather.weather[0].description}</p>
                     </div>
-                    {error && <p style={{ color: "red" }}>{error}</p>}
-
-                    {
-                        !showInput && (
-                            <button className="wheather-location__btn" onClick={() => setShowInput(true)}>
-                                <img width="13" height="13" style={{ marginRight: '5px' }} alt="уточнить местоположение" src={gpsIcon} />
-                                Уточнить местоположение
-                            </button>
-                        )
-                    }
-
-                    {
-                        showInput && (
-                            <div className="weather-show">
-                                <input
-                                    type="text"
-                                    placeholder="Введите город"
-                                    value={cityInput}
-                                    onChange={(e) => setCityInput(e.target.value)}
-                                    className="weather-input"
-                                />
-                                <button className="weather-show__btn" onClick={async () => {
-                                    await fetchWeatherByCity(cityInput);
-                                    setShowInput(false);
-                                }}>
-                                    <div className="wave-container">
-                                        <svg className="wave wave1" viewBox="0 0 200 25" preserveAspectRatio="none">
-                                            <path
-                                                fill="#1551eaff"
-                                                opacity="0.5"
-                                                d="M0 15 Q25 3 50 15 T100 15 T150 15 T200 15 V25 H0z"
-                                            />
-                                        </svg>
-                                        <svg className="wave wave2" viewBox="0 0 200 25" preserveAspectRatio="none">
-                                            <path
-                                                fill="#f70808ff"
-                                                opacity="0.7"
-                                                d="M0 15 Q25 8 50 15 T100 15 T150 15 T200 15 V25 H0z"
-                                            />
-                                        </svg>
-                                    </div> <p>Показать погоду</p>
-                                </button>
-                            </div>
-                        )
-                    }
                 </div>
+            )}
 
-            )
-            }
+            {error && <p style={{ color: "red" }}>{error}</p>}
 
+            {(!showInput && !weather) && (
+                <button className="wheather-location__btn" onClick={() => setShowInput(true)}>
+                    <img width="13" height="13" style={{ marginRight: '5px' }} alt="уточнить местоположение" src={gpsIcon} />
+                    Уточнить местоположение
+                </button>
+            )}
 
-        </div >
+            {showInput && (
+                <div className="weather-show">
+                    <input
+                        type="text"
+                        placeholder="Введите город"
+                        value={cityInput}
+                        onChange={(e) => setCityInput(e.target.value)}
+                        className="weather-input"
+                    />
+                    <button className="weather-show__btn" onClick={async () => {
+                        await fetchWeatherByCity(cityInput);
+                        if (!error) setShowInput(false);
+                    }}>
+                        Показать погоду
+                    </button>
+                </div>
+            )}
+        </div>
     );
 }
 
