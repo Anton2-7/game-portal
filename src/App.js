@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Header } from "./layouts/Header";
 import { Footer } from "./layouts/Footer";
 import { Main } from "./layouts/Main";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/сards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
@@ -40,10 +40,9 @@ function App() {
     <>
       <Header onSearch={searchGames} />
       <ScrollToTop />
-
       <Routes>
         <Route
-          path="/games"
+          path="/"
           element={
             <Main gameSearch={games} loading={loading} onSearch={searchGames} />
           }
