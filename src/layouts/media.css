@@ -48,8 +48,16 @@
   .soldierIcn {
     display: none;
   }
-  .brand-logo {
-    margin-left: 23px;
+  .container {
+    padding: 0;
+  }
+  nav .brand-logo {
+    font-size: 1.5rem;
+  }
+  .flag-img {
+    width: 43px;
+    height: 43px;
+    margin-left: 15px;
   }
   .burger {
     margin: auto !important;
