@@ -36,11 +36,9 @@ function Footer() {
           </div>
         </div>
         <div className="footer-copyright">
-          <div className="container">
+          <div className="container center">
             © {new Date().getFullYear()} Все права защищены
-            <a className="grey-text text-lighten-4 right" href="#!">
-              Больше информации
-            </a>
+
           </div>
         </div>
       </footer>
