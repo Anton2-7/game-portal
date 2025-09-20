@@ -1,70 +1,110 @@
-# Getting Started with Create React App
+Game-Portal
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Веб-портал для игр / игровой портал — React-приложение (создано с помощью Create React App).
 
-## Available Scripts
+Содержание
 
-In the project directory, you can run:
+Описание
 
-### `npm start`
+Функциональность
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Технологии
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+Установка
 
-### `npm test`
+Запуск
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Структура проекта
 
-### `npm run build`
+Планы на будущее
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Как внести вклад
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Лицензия
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Описание
 
-### `npm run eject`
+Game-Portal — это фронтенд приложение, реализованное на React, которое служит порталом для игр / игровых материалов.
+Полный стек включает интерфейс, доступный через браузер, где пользователи могут просматривать краткую информацию о различных видеоиграх: краткое описание, платформа, дата-выхода, оценки и т.д. Также интересно посмотреть на платформы и количество игр которое когда-либо на них выходило. 
+Функциональность
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Вот что уже сделано / предусмотрено / может быть реализовано:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Отображение главной страницы / портала
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Пользовательский интерфейс с возможностью навигации между разделами
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Поддержка стилей, компоновки, адаптивности
 
-## Learn More
+Возможность добавления игр / карточек / компонентов отображения игр (если реализовано)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+Возможность развёртывания (production build)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Технологии
 
-### Code Splitting
+Используется:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+React.js, создано через Create React App. 
+GitHub
 
-### Analyzing the Bundle Size
+Языки: JavaScript, CSS, HTML. 
+GitHub
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Сборка: стандартный набор Create React App (скрипты start, build) 
+GitHub
 
-### Making a Progressive Web App
+Установка
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Клонировать репозиторий:
 
-### Advanced Configuration
+git clone https://github.com/Anton2-7/game-portal.git
+cd game-portal
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
 
-### Deployment
+Установить зависимости:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+npm install
 
-### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+или, если используешь yarn:
+
+yarn
+
+Запуск
+
+Для разработки / локальной работы:
+
+npm start
+
+
+Это запустит приложение в режиме разработки. Открой браузер по адресу http://localhost:3000. Изменения в коде автоматически будут отображаться. 
+GitHub
+
+Для сборки на продакшн:
+
+npm run build
+
+
+Это создаст оптимизированную сборку в папке build. 
+GitHub
+
+Структура проекта
+
+Примерная структура папок и файлов:
+
+game-portal/
+├── public/                # статические файлы, корневой HTML и т.п.
+├── src/                   # исходники React-приложения
+│   ├── components/        # компоненты
+│   ├── pages/             # страницы (если есть)
+│   ├── assets/            # картинки, иконки, стили
+│   ├── styles/            # CSS / SCSS / стилизация
+│   ├── App.js
+│   └── index.js
+├── package.json
+├── package-lock.json
+├── .gitignore
+└── README.md
+
+
+(Добавь сюда, если есть роутинг, состояния, менеджмент состояния (Redux / Context API и т.д.), тесты, конфигурации.)
