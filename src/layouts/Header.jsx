@@ -1,23 +1,39 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import flag from "../images/flag.gif"
+import { useRef } from "react";
 
 function Header(props) {
 
 
 
   const [isOpen, setOpen] = useState(false);
+  const menuRef = useRef(null); // вернет DOM-элемент | устанавливает понимание где был совершен клик (внутри или снаружи меню)
 
 
 
-  window.onclick = function (event) {
-    if (!event.target.matches('.burger')) {
-      setOpen(false);
+  useEffect(() => {
+
+    const handleCloseMenu = (event) => {
+
+      if (!menuRef.current) return;       // Защита от ошибки на случай, если menuRef.current ещё не монитрован
+
+
+      if (!menuRef.current.contains(event.target)) {        // contains вернет target (true → если target внутри menuRef) (false → если клик снаружи)
+
+        setOpen(false);
+      }
     }
-  }
+
+    window.addEventListener('click', handleCloseMenu);
+    return () => {
+      window.removeEventListener('click', handleCloseMenu);
+    }
+  }, []);
+
 
   const toggleMenu = () => {
     setOpen((prev) => !prev);
@@ -30,9 +46,10 @@ function Header(props) {
 
 
 
+
   return (
     <>
-      <nav className="red darken-4">
+      <nav className="red darken-4" >
         <div className="container">
           <div className="nav-wrapper">
             <div className="logo-wrapper">
@@ -40,6 +57,7 @@ function Header(props) {
                 className={`burger ${isOpen ? "open" : ""}`}
                 onClick={toggleMenu}
                 aria-label="Открыть меню"
+                ref={menuRef}
               ></button>
               {location.pathname !== "/" && isMobile ? (
                 <img src={flag} alt="flag" className="flag-img" />
@@ -58,7 +76,7 @@ function Header(props) {
             </ul>
           </div>
 
-          <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}>
+          <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`} >
             <ul className="burger-list">
               <li><Link to="/"><i className="material-icons">игры</i></Link></li>
               <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
