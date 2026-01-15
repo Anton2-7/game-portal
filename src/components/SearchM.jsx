@@ -1,5 +1,4 @@
 import React from "react";
-import SerachGrayIcn from "../images/searchGray_Icn.png"
 
 class SearchM extends React.Component {
   state = {
