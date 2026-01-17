@@ -82,15 +82,22 @@ function PlatformCards({ API_KEY }) {
         loadAllPlatforms();
     }, []);
 
+
+
+
     useEffect(() => {
-        if (platformIdFromUrl) {
-            const platform = platforms.find(p => p.id === Number(platformIdFromUrl));
-            if (platform) {
-                setSelectedPlatform(platform);
-                loadGamesForPlatform(platform.id, page);
-            }
-        }
-    }, [platforms, platformIdFromUrl, page]);
+        if (!platformIdFromUrl || platforms.length === 0) return
+
+        const platform = platforms.find(p => p.id === Number(platformIdFromUrl))
+        if (!platform) return
+
+        const pageFromUrl = Number(searchParams.get("page")) || 1
+        setSelectedPlatform(platform)
+        setPage(pageFromUrl);
+
+        loadGamesForPlatform(platform.id, pageFromUrl)
+
+    }, [platforms, platformIdFromUrl, searchParams]);
 
 
     return (
@@ -101,17 +108,16 @@ function PlatformCards({ API_KEY }) {
                 <>
                     <div
                         className="platform-filter"
-                        style={{ display: "flex", alignItems: "center", textAlign: "left" }}
+                        style={{ display: "flex", textAlign: "left" }}
                     >
-                        <p style={{ marginRight: "20px" }}>Фильтр по платформе: </p>
+                        <p style={{}}><b>Игровая платформа:</b> </p>
                         <RadioInput
+                            selectedPlatform={selectedPlatform ? selectedPlatform.id : null}
                             onSelect={handleSelectPlatform}
+                            style={{ marginLeft: "10px" }}
                             onClear={handleClear}
-                            style={{ marginRight: "10px" }}
+
                         />
-                        <p onClick={handleClear} className="platform__clear-btn">
-                            Очистить
-                        </p>
                     </div>
 
                     {selectedPlatform ? (

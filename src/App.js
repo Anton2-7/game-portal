@@ -7,7 +7,8 @@ import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/сards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
 
-const API_KEY = process.env.REACT_APP_RAWG_KEY;
+// const API_KEY = process.env.REACT_APP_RAWG_KEY;
+const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
 
 function App() {
   const [games, setGames] = useState([]);

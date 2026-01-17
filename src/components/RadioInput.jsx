@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Select from "react-select";
 
 const options = [
@@ -51,50 +50,32 @@ const options = [
     { value: "112", label: "Jaguar" },
     { value: "77", label: "Game Gear" },
     { value: "12", label: "Neo Geo" },
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ];
 
-export function RadioInput({ onSelect, onClear }) {
-    const [selectedOption, setSelectedOption] = useState(null);
+export function RadioInput({ onSelect, onClear, selectedPlatform }) {
+
+    const selectedOption = options.find(
+        option => Number(option.value) === Number(selectedPlatform)
+    );
 
     const handleChange = (option) => {
-        setSelectedOption(option); // ✅ сохраняем объект полностью
-        if (onSelect) onSelect(option.value, option.label);
-    };
-
-    const handleClear = () => {
-        setSelectedOption(null);
-        if (onClear) onClear();
+        if (option) {
+            onSelect && onSelect(Number(option.value), option.label);
+        } else {
+            onClear && onClear();   // очистка
+        }
     };
 
     return (
-        <div style={{ display: "flex", gap: 10, alignItems: "center" }}>
+        <div style={{ display: "flex", marginLeft: "4px", alignItems: "center" }}>
             <Select
                 options={options}
-                value={selectedOption} // объект из options
+                value={selectedOption} // controlled component
                 onChange={handleChange}
+                isClearable={true}
                 placeholder="Выберите платформу"
                 isSearchable={false}
             />
-            {selectedOption && (
-                <button onClick={handleClear} style={{ padding: "6px 12px", cursor: "pointer" }}>
-                    Очистить
-                </button>
-            )}
         </div>
     );
 }
