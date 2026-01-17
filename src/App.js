@@ -1,44 +1,42 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Header } from "./layouts/Header";
 import { Footer } from "./layouts/Footer";
 import { Main } from "./layouts/Main";
-import { HashRouter as Router, Route, Routes } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/сards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
 
-// const API_KEY = process.env.REACT_APP_RAWG_KEY;
 const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
 
 function App() {
   const [games, setGames] = useState([]);
-  const [loading, setLoading] = useState(true); // Изначально true, чтобы показать прелоадер
-  // функция поиска игр
-  const searchGames = async (query) => {
-    setLoading(true);
-    try {
-      const res = await fetch(
-        `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}`
-      );
-      const data = await res.json();
-      setGames(data.results || []);
-      console.log("Данные загружены:", data);
-      // на случай если results нет
-    } catch (err) {
-      console.error("Ошибка при загрузке данных:", err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [loading, setLoading] = useState(true);
 
-  // <-- добавлена закрывающая скобка
-  // при первом запуске — загрузить что-то по умолчанию
+  // функция поиска игр
+ const searchGames = useCallback(async (query) => {
+  setLoading(true);
+  try {
+    const res = await fetch(
+      `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}`
+    );
+    const data = await res.json();
+    setGames(data.results || []);
+    console.log("Данные загружены:", data);
+  } catch (err) {
+    console.error("Ошибка при загрузке данных:", err);
+    setGames([]);
+  } finally {
+    setLoading(false);
+  }
+}, [])
+  // при первом запуске — загрузить игры по умолчанию
   useEffect(() => {
     searchGames("cyberpunk");
-  }, []);
+  }, [searchGames]);
 
   return (
-    <>
+    <HashRouter>
       <Header onSearch={searchGames} />
       <ScrollToTop />
       <Routes>
@@ -50,16 +48,15 @@ function App() {
         />
         <Route
           path="/platforms"
-          searchGames={searchGames}
-          element={<PlatformCards API_KEY={API_KEY} />}
+          element={<PlatformCards searchGames={searchGames} />}
         />
         <Route
           path="/games/:id"
-          element={<GamePage loading={loading} API_KEY={API_KEY} />}
-        ></Route>
+          element={<GamePage loading={loading} />}
+        />
       </Routes>
       <Footer />
-    </>
+    </HashRouter>
   );
 }
 

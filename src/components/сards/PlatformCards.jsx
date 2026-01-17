@@ -8,7 +8,7 @@ import { Pagination } from "../Pagination/Pagination";
 
 const PAGE_SIZE = 20; // Количество игр на страницу
 
-function PlatformCards({ API_KEY }) {
+function PlatformCards() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [platforms, setPlatforms] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -16,6 +16,9 @@ function PlatformCards({ API_KEY }) {
     const [games, setGames] = useState([]);
     const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
     const [totalPages, setTotalPages] = useState(1);
+
+
+    const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
 
     const platformIdFromUrl = searchParams.get("platform");
     // Загружаем список платформ
