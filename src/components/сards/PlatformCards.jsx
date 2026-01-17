@@ -1,14 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { Preloader } from "../Preloader";
 import { RadioInput } from "../RadioInput";
 import "./style.css";
 import { Pagination } from "../Pagination/Pagination";
 
+const PAGE_SIZE = 20;
+const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
+const BASE_URL = "https://api.rawg.io/api"; // ✅ Без пробелов!
 
-const PAGE_SIZE = 20; // Количество игр на страницу
-
-function PlatformCards() {
+export function PlatformCards() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [platforms, setPlatforms] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -17,58 +18,55 @@ function PlatformCards() {
     const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
     const [totalPages, setTotalPages] = useState(1);
 
+    // Используем ref для отмены запросов — не вызывает ререндеров
+    const gamesControllerRef = useRef(null);
 
-    const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
+    // Загрузка игр для выбранной платформы
+    const loadGamesForPlatform = useCallback(async (platformId, page = 1) => {
+        // Отменяем предыдущий запрос
+        if (gamesControllerRef.current) {
+            gamesControllerRef.current.abort();
+        }
 
-    const platformIdFromUrl = searchParams.get("platform");
-    // Загружаем список платформ
-    const loadAllPlatforms = async () => {
+        const controller = new AbortController();
+        gamesControllerRef.current = controller;
+
         setLoading(true);
         try {
-            const res = await fetch(`https://api.rawg.io/api/platforms?key=${API_KEY}`);
+            const url = `${BASE_URL}/games?key=${API_KEY}&platforms=${platformId}&page_size=${PAGE_SIZE}&page=${page}`;
+            const res = await fetch(url, { signal: controller.signal });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
             const data = await res.json();
-            setPlatforms(data.results || []);
-            console.log("Загруженные игры:", data);
-
+            if (!controller.signal.aborted) {
+                setGames(data.results || []);
+                setTotalPages(Math.ceil((data.count || 0) / PAGE_SIZE));
+            }
         } catch (e) {
-            console.error("Ошибка загрузки платформ:", e);
+            if (!controller.signal.aborted) {
+                console.error("Ошибка загрузки игр:", e);
+            }
         } finally {
-            setLoading(false);
+            if (!controller.signal.aborted) {
+                setLoading(false);
+            }
         }
-    };
-
-
-    // Загружаем игры для выбранной платформы с пагинацией
-    const loadGamesForPlatform = async (platformId, page = 1) => {
-        setLoading(true);
-        try {
-            const res = await fetch(
-                `https://api.rawg.io/api/games?key=${API_KEY}&platforms=${platformId}&page_size=${PAGE_SIZE}&page=${page}`
-            );
-            const data = await res.json();
-            setGames(data.results || []);
-            setTotalPages(Math.ceil((data.count || 3) / PAGE_SIZE));
-        } catch (e) {
-            console.error("Ошибка загрузки игр:", e);
-        } finally {
-            setLoading(false);
-        }
-    };
+    }, []); // ✅ Зависимости пустые, так как BASE_URL, API_KEY, PAGE_SIZE — константы
 
     // Выбор платформы
     const handleSelectPlatform = (id, name) => {
         setSelectedPlatform({ id, name });
         setPage(1);
-        setSearchParams({ platform: id, page: 1 });
+        setSearchParams({ platform: id, page: "1" });
         loadGamesForPlatform(id, 1);
     };
 
     // Переключение страниц
     const handlePageChange = (newPage) => {
         setPage(newPage);
-        setSearchParams({ platform: selectedPlatform.id, page: newPage });
+        setSearchParams({ platform: selectedPlatform.id, page: String(newPage) });
         loadGamesForPlatform(selectedPlatform.id, newPage);
-
     };
 
     // Очистка фильтра
@@ -79,47 +77,67 @@ function PlatformCards() {
         setSearchParams({});
     };
 
-
-    // При первом рендере проверяем URL
+    // Загрузка списка платформ при монтировании
     useEffect(() => {
-        loadAllPlatforms();
+        const controller = new AbortController();
+
+        const loadPlatforms = async () => {
+            setLoading(true);
+            try {
+                const res = await fetch(`${BASE_URL}/platforms?key=${API_KEY}`, {
+                    signal: controller.signal,
+                });
+                if (!res.ok) throw new Error(`HTTP ${res.status}`);
+                const data = await res.json();
+                if (!controller.signal.aborted) {
+                    setPlatforms(data.results || []);
+                }
+            } catch (e) {
+                if (!controller.signal.aborted) {
+                    console.error("Ошибка загрузки платформ:", e);
+                }
+            } finally {
+                if (!controller.signal.aborted) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        loadPlatforms();
+
+        return () => {
+            controller.abort();
+        };
     }, []);
 
-
-
-
+    // Обработка URL-параметров (платформа + страница)
+    const platformIdFromUrl = searchParams.get("platform");
     useEffect(() => {
-        if (!platformIdFromUrl || platforms.length === 0) return
+        if (!platformIdFromUrl || platforms.length === 0) return;
 
-        const platform = platforms.find(p => p.id === Number(platformIdFromUrl))
-        if (!platform) return
+        const platformId = Number(platformIdFromUrl);
+        const platform = platforms.find(p => p.id === platformId);
+        if (!platform) return;
 
-        const pageFromUrl = Number(searchParams.get("page")) || 1
-        setSelectedPlatform(platform)
+        const pageFromUrl = Number(searchParams.get("page")) || 1;
+        setSelectedPlatform(platform);
         setPage(pageFromUrl);
-
-        loadGamesForPlatform(platform.id, pageFromUrl)
-
-    }, [platforms, platformIdFromUrl, searchParams]);
-
+        loadGamesForPlatform(platformId, pageFromUrl);
+    }, [platforms, platformIdFromUrl, searchParams, loadGamesForPlatform]);
 
     return (
         <main className="container content">
-            {loading ? (
+            {loading && !selectedPlatform && platforms.length === 0 ? (
                 <Preloader />
             ) : (
                 <>
-                    <div
-                        className="platform-filter"
-                        style={{ display: "flex", textAlign: "left" }}
-                    >
-                        <p style={{}}><b>Игровая платформа:</b> </p>
+                    <div className="platform-filter" style={{ display: "flex", textAlign: "left" }}>
+                        <p><b>Игровая платформа:</b></p>
                         <RadioInput
-                            selectedPlatform={selectedPlatform ? selectedPlatform.id : null}
+                            selectedPlatform={selectedPlatform?.id || null}
                             onSelect={handleSelectPlatform}
-                            style={{ marginLeft: "10px" }}
                             onClear={handleClear}
-
+                            style={{ marginLeft: "10px" }}
                         />
                     </div>
 
@@ -175,9 +193,5 @@ function PlatformCards() {
                 </>
             )}
         </main>
-
-
     );
 }
-
-export { PlatformCards };

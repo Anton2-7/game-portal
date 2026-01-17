@@ -14,22 +14,23 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   // функция поиска игр
- const searchGames = useCallback(async (query) => {
-  setLoading(true);
-  try {
-    const res = await fetch(
-      `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}`
-    );
-    const data = await res.json();
-    setGames(data.results || []);
-    console.log("Данные загружены:", data);
-  } catch (err) {
-    console.error("Ошибка при загрузке данных:", err);
-    setGames([]);
-  } finally {
-    setLoading(false);
-  }
-}, [])
+  const searchGames = useCallback(async (query) => {
+    setLoading(true);
+    try {
+      const res = await fetch(
+        `https://api.rawg.io/api/games?key=${API_KEY}&search=${query}`
+      );
+      const data = await res.json();
+      setGames(data.results || []);
+      console.log("Данные загружены:", data);
+    } catch (err) {
+      console.error("Ошибка при загрузке данных:", err);
+      setGames([]);
+    } finally {
+      setLoading(false);
+    }
+  },[]);
+
   // при первом запуске — загрузить игры по умолчанию
   useEffect(() => {
     searchGames("cyberpunk");

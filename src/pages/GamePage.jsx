@@ -23,26 +23,46 @@ function GamePage() {
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+    const signal = controller.signal;
     const loadGame = async () => {
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`https://api.rawg.io/api/games/${id}?key=${API_KEY}`);
+        const url = `https://api.rawg.io/api/games/${id}?key=${API_KEY}`
+        const res = await fetch(url, { signal });
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
         const data = await res.json();
-        setGame(data);
+        if (!signal.aborted) {
+          setGame(data)
+          setLoading(false);
+          // Отмена запроса при выходе из эффекта
+        }
       } catch (err) {
-        setError(err.message);
+        if (signal.aborted) return; // Игнорироварие, если отменено
+        if (err.name === "TimeoutError") {
+          setError("Превышено время ожидания ответа от сервера");
+        } else {
+          setError(err.message || "Неизвестная ошибка");
+        }
       } finally {
-        setLoading(false);
-      }
+        if (!signal.aborted) {
+          setLoading(false);
+        }
+      };
+    }
+
+    if (id) {
+      loadGame();
+    }
+    return () => {
+      controller.abort();
     };
-    loadGame();
-  }, [id,]);
+  }, [id])
 
   if (loading) return <Preloader />;
   if (error) return <p>Ошибка: {error}</p>;
-  if (!game) return <p>Данные не найдены</p>;
+  if (!game) return <p>Данные об играх не найдены</p>;
 
   const background = game.background_image_additional || game.background_image || "";
 
