@@ -4,7 +4,7 @@ import { Footer } from "./layouts/Footer";
 import { Main } from "./layouts/Main";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { GamePage } from "./pages/GamePage";
-import { PlatformCards } from "./components/сards/PlatformCards";
+import { PlatformCards } from "./components/cards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
 
 const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
@@ -31,7 +31,6 @@ function App() {
     }
   },[]);
 
-  // при первом запуске — загрузить игры по умолчанию
   useEffect(() => {
     searchGames("cyberpunk");
   }, [searchGames]);

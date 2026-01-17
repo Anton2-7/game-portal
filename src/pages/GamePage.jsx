@@ -60,7 +60,7 @@ function GamePage() {
     };
   }, [id])
 
-  if (loading) return <Preloader />;
+  if (loading) return <p className="height-100"><Preloader /></p>
   if (error) return <p>Ошибка: {error}</p>;
   if (!game) return <p>Данные об играх не найдены</p>;
 
