@@ -173,7 +173,7 @@ function GamePage() {
 
             {game.description_raw && <p>{game.description_raw}</p>}
 
-            <button onClick={() => navigate(-1)} className="GamePage__btn-back">
+            <button type="button" onClick={() => navigate("/")} className="GamePage__btn-back">
               ← Назад к списку
             </button>
           </div>
