@@ -157,11 +157,11 @@ function GamePage() {
 
             {/* Теги через запятую */}
             <h5>Теги:</h5>
-            <p>
+            <div className="tags">
               {game.tags?.length > 0
-                ? game.tags.map((tag) => tag.name).join(", ")
+                ? game.tags.map((tag) => <button className="tag_btn" key={tag.id}>{tag.name}</button>)
                 : "Нет тегов"}
-            </p>
+            </div>
 
             {/* Сайт */}
             <h5>Веб-сайт</h5>
