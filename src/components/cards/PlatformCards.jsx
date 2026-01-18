@@ -12,17 +12,20 @@ const BASE_URL = "https://api.rawg.io/api";
 export function PlatformCards() {
     const [searchParams, setSearchParams] = useSearchParams();
 
-    // URL как источник истины
+    // URL — единственный источник истины
     const platformId = Number(searchParams.get("platform")) || null;
     const page = Number(searchParams.get("page")) || 1;
 
+    // State для данных
     const [platforms, setPlatforms] = useState([]);
     const [games, setGames] = useState([]);
+    const [totalPages, setTotalPages] = useState(1);
     const [loadingPlatforms, setLoadingPlatforms] = useState(true);
     const [loadingGames, setLoadingGames] = useState(false);
 
     const gamesControllerRef = useRef(null);
 
+    // Выбранная платформа
     const selectedPlatform = useMemo(
         () => platforms.find(p => p.id === platformId) || null,
         [platforms, platformId]
@@ -32,7 +35,6 @@ export function PlatformCards() {
 
     useEffect(() => {
         const controller = new AbortController();
-
         const loadPlatforms = async () => {
             setLoadingPlatforms(true);
             try {
@@ -41,7 +43,6 @@ export function PlatformCards() {
                 });
 
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
                 const data = await res.json();
                 if (!controller.signal.aborted) {
                     setPlatforms(data.results || []);
@@ -51,9 +52,7 @@ export function PlatformCards() {
                     console.error("Ошибка загрузки платформ:", e);
                 }
             } finally {
-                if (!controller.signal.aborted) {
-                    setLoadingPlatforms(false);
-                }
+                if (!controller.signal.aborted) setLoadingPlatforms(false);
             }
         };
 
@@ -61,7 +60,7 @@ export function PlatformCards() {
         return () => controller.abort();
     }, []);
 
-    // Загрузка игр при изменении URL
+    // Загрузка игр
 
     const loadGamesForPlatform = useCallback(async (platformId, page) => {
         if (!platformId) return;
@@ -85,28 +84,27 @@ export function PlatformCards() {
 
             if (!controller.signal.aborted) {
                 setGames(data.results || []);
+                setTotalPages(Math.ceil((data.count || 0) / PAGE_SIZE));
             }
         } catch (e) {
-            if (!controller.signal.aborted) {
-                console.error("Ошибка загрузки игр:", e);
-            }
+            if (!controller.signal.aborted) console.error("Ошибка загрузки игр:", e);
         } finally {
-            if (!controller.signal.aborted) {
-                setLoadingGames(false);
-            }
+            if (!controller.signal.aborted) setLoadingGames(false);
         }
     }, []);
 
     useEffect(() => {
         if (!platformId) {
             setGames([]);
+            setTotalPages(1);
             return;
         }
 
         loadGamesForPlatform(platformId, page);
     }, [platformId, page, loadGamesForPlatform]);
 
-    // Заголовок меняen только URL
+    // Handler → меняет только URL
+
 
     const handleSelectPlatform = (id) => {
         setSearchParams({ platform: id, page: "1" });
@@ -142,32 +140,31 @@ export function PlatformCards() {
                     {loadingGames ? (
                         <div className="grid">
                             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
-                                <SkeletonCard key={i} />
+                                <SkeletonCard key={i} isPlatform />
                             ))}
                         </div>
                     ) : (
                         <>
                             <div className="grid">
                                 {games.map((item) => (
-                                    <div key={item.id} className="cardd">
-                                        <Link to={`../games/${item.id}`}>
-                                            {item.background_image && (
-                                                <img
-                                                    className="platform-img"
-                                                    src={item.background_image}
-                                                    alt={item.name}
-                                                />
+                                    <Link key={item.id} className="card" to={`../games/${item.id}`}>
+                                        <div className="image-wrapper">
+                                            {item.background_image ? (
+                                                <img className="platform-img" src={item.background_image} alt={item.name} />
+                                            ) : (
+                                                <div className="no-image">Нет изображения</div>
                                             )}
-                                            <div className="platform-content">
-                                                <h3 className="platform-title">{item.name}</h3>
-                                            </div>
-                                        </Link>
-                                    </div>
+                                        </div>
+                                        <div className="platform-content">
+                                            <h4 className="platform-title">{item.name}</h4>
+                                        </div>
+                                    </Link>
                                 ))}
                             </div>
 
                             <Pagination
                                 page={page}
+                                totalPages={totalPages}
                                 onPageChange={handlePageChange}
                             />
                         </>
@@ -182,19 +179,17 @@ export function PlatformCards() {
             ) : (
                 <div className="grid">
                     {platforms.map((item) => (
-                        <Link to={`?platform=${item.id}&page=1`} key={item.id}>
-                            <h4 className="platform-title">{item.name}</h4>
-                            <div className="cardd">
-                                <div className="image-wrapper">
-                                    <img
-                                        className="platform-img"
-                                        src={item.image_background}
-                                        alt={item.name}
-                                    />
-                                </div>
-                                <div className="platform-content">
-                                    <p>Всего игр: {item.games_count}</p>
-                                </div>
+                        <Link key={item.id} className="card" to={`?platform=${item.id}&page=1`}>
+                            <div className="image-wrapper">
+                                {item.image_background ? (
+                                    <img className="platform-img" src={item.image_background} alt={item.name} />
+                                ) : (
+                                    <div className="no-image">Нет изображения</div>
+                                )}
+                            </div>
+                            <div className="platform-content">
+                                <h4 className="platform-title">{item.name}</h4>
+                                <p>Всего игр: {item.games_count}</p>
                             </div>
                         </Link>
                     ))}

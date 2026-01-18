@@ -3,10 +3,11 @@ import './style.css';
 import gpsIcon from "../../images/gps-2.png";
 import { useSearchParams } from "react-router-dom";
 
-// const API_KEY_WEATHER = process.env.REACT_APP_WHEATHER_API_KEY;
 const API_KEY_WEATHER = "d463a889c5bf1f92dc24f0f16a3d68f2";
+const UNITS = "metric";
+const LANG = "ru";
 
-function Weather() {
+export function Weather() {
     const [coords, setCoords] = useState(null);
     const [weather, setWeather] = useState(null);
     const [error, setError] = useState(null);
@@ -15,77 +16,117 @@ function Weather() {
 
     const [searchParams, setSearchParams] = useSearchParams();
 
-    const units = "metric";
-    const lang = "ru";
+    const getPosition = () => {
+        return new Promise((resolve, reject) => {
+            if (!navigator.geolocation) return reject("Геолокация не поддерживается");
 
-    const fetchWeatherByCoords = async (lat, lon) => {
-        try {
-            const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY_WEATHER}&units=${units}&lang=${lang}`
+            navigator.geolocation.getCurrentPosition(
+                (pos) => resolve(pos.coords),
+                (err) => reject(err),
+                { timeout: 5000 } // 5 секунд
             );
-            if (!res.ok) throw new Error("Ошибка запроса погоды");
-            const data = await res.json();
-            setWeather(data);
-            setError(null);
-            setCity(data.name);
-        } catch (err) {
-            setError("Не удалось определить погоду автоматически. Введите город вручную.");
-        }
+        });
     };
 
-    const fetchWeatherByCity = async (city) => {
+    const fetchWeather = async ({ city, latitude, longitude }) => {
+        const controller = new AbortController();
         try {
-            const res = await fetch(
-                `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY_WEATHER}&units=${units}&lang=${lang}`
-            );
-            if (!res.ok) throw new Error("Город не найден");
+            let url = "";
+
+            if (city) {
+                url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY_WEATHER}&units=${UNITS}&lang=${LANG}`;
+            } else if (latitude && longitude) {
+                url = `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY_WEATHER}&units=${UNITS}&lang=${LANG}`;
+            } else {
+                throw new Error("Нет данных для запроса погоды");
+            }
+
+            const res = await fetch(url, { signal: controller.signal });
+            if (!res.ok) throw new Error("Город или координаты не найдены");
+
             const data = await res.json();
             setWeather(data);
-            setCoords({ latitude: data.coord.lat, longitude: data.coord.lon });
+
+            // Сохраняем город и координаты в localStorage
+            if (data.name) {
+                setCity(data.name);
+            }
+            if (data.coord) {
+                const c = { latitude: data.coord.lat, longitude: data.coord.lon };
+                setCoords(c);
+                localStorage.setItem("coords", JSON.stringify(c));
+            }
+
             setError(null);
-            setCity(data.name);
         } catch (err) {
-            setError("Город не найден. Попробуйте другой.");
+            console.error(err);
+            setError(err.message || "Ошибка при получении погоды");
         }
+
+        return () => controller.abort();
     };
 
+    // Сохранение города localStorage и URL
     const setCity = (city) => {
         setCityInput(city);
-        localStorage.setItem('selectedCity', city);
-        searchParams.set('city', city);
+        localStorage.setItem("selectedCity", city);
+        searchParams.set("city", city);
         setSearchParams(searchParams);
     };
 
+
     useEffect(() => {
-        const cityFromUrl = searchParams.get('city');
-        if (cityFromUrl) {
-            fetchWeatherByCity(cityFromUrl);
-            return;
-        }
+        let isMounted = true;
 
-        const cityFromStorage = localStorage.getItem('selectedCity');
-        if (cityFromStorage) {
-            fetchWeatherByCity(cityFromStorage);
-            return;
-        }
+        const loadWeather = async () => {
+            try {
+                // Проверка данных в URL
+                const cityFromUrl = searchParams.get("city");
+                if (cityFromUrl && isMounted) {
+                    await fetchWeather({ city: cityFromUrl });
+                    return;
+                }
 
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (pos) => {
-                    const { latitude, longitude } = pos.coords;
+                // Проверка данных в localStorage
+                const cityFromStorage = localStorage.getItem("selectedCity");
+                if (cityFromStorage && isMounted) {
+                    await fetchWeather({ city: cityFromStorage });
+                    return;
+                }
+
+                const coordsFromStorage = localStorage.getItem("coords");
+                if (coordsFromStorage && isMounted) {
+                    const { latitude, longitude } = JSON.parse(coordsFromStorage);
                     setCoords({ latitude, longitude });
-                    fetchWeatherByCoords(latitude, longitude);
-                },
-                () => {
+                    await fetchWeather({ latitude, longitude });
+                    return;
+                }
+
+                // Получаение геолокации
+                try {
+                    const geoCoords = await getPosition();
+                    if (!isMounted) return;
+                    setCoords(geoCoords);
+                    await fetchWeather({ latitude: geoCoords.latitude, longitude: geoCoords.longitude });
+                } catch {
+                    if (!isMounted) return;
                     setError("Не удалось получить геолокацию. Введите город вручную.");
                     setShowInput(true);
                 }
-            );
-        } else {
-            setError("Геолокация не поддерживается. Введите город вручную.");
-            setShowInput(true);
-        }
-    }, []);
+            } catch (err) {
+                if (!isMounted) return;
+                setError("Ошибка при загрузке погоды. Введите город вручную.");
+                setShowInput(true);
+            }
+        };
+
+        loadWeather();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [searchParams]);
+
 
     return (
         <div>
@@ -97,7 +138,11 @@ function Weather() {
                     </div>
 
                     <div className="weather-content">
-                        <img className="weather-img" alt="погода" src={`https://openweathermap.org/img/wn/${weather.weather[0]['icon']}@2x.png`} />
+                        <img
+                            className="weather-img"
+                            alt="погода"
+                            src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
+                        />
                         <p>{weather.weather[0].description}</p>
                     </div>
                 </div>
@@ -107,7 +152,13 @@ function Weather() {
 
             {(!showInput && !weather) && (
                 <button className="wheather-location__btn" onClick={() => setShowInput(true)}>
-                    <img width="13" height="13" style={{ marginRight: '5px' }} alt="уточнить местоположение" src={gpsIcon} />
+                    <img
+                        width="13"
+                        height="13"
+                        style={{ marginRight: '5px' }}
+                        alt="уточнить местоположение"
+                        src={gpsIcon}
+                    />
                     Уточнить местоположение
                 </button>
             )}
@@ -121,10 +172,13 @@ function Weather() {
                         onChange={(e) => setCityInput(e.target.value)}
                         className="weather-input"
                     />
-                    <button className="weather-show__btn" onClick={async () => {
-                        await fetchWeatherByCity(cityInput);
-                        if (!error) setShowInput(false);
-                    }}>
+                    <button
+                        className="weather-show__btn"
+                        onClick={async () => {
+                            await fetchWeather({ city: cityInput });
+                            if (!error) setShowInput(false);
+                        }}
+                    >
                         Показать погоду
                     </button>
                 </div>
@@ -132,5 +186,3 @@ function Weather() {
         </div>
     );
 }
-
-export { Weather };
