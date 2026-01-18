@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef, useMemo } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { RadioInput } from "../RadioInput";
 import "./style.css";
@@ -11,68 +11,25 @@ const BASE_URL = "https://api.rawg.io/api";
 
 export function PlatformCards() {
     const [searchParams, setSearchParams] = useSearchParams();
+
+    // URL как источник истины
+    const platformId = Number(searchParams.get("platform")) || null;
+    const page = Number(searchParams.get("page")) || 1;
+
     const [platforms, setPlatforms] = useState([]);
+    const [games, setGames] = useState([]);
     const [loadingPlatforms, setLoadingPlatforms] = useState(true);
     const [loadingGames, setLoadingGames] = useState(false);
-    const [selectedPlatform, setSelectedPlatform] = useState(null);
-    const [games, setGames] = useState([]);
-    const [page, setPage] = useState(Number(searchParams.get("page")) || 1);
-    const [totalPages, setTotalPages] = useState(1);
 
     const gamesControllerRef = useRef(null);
 
-    const loadGamesForPlatform = useCallback(async (platformId, page = 1) => {
-        if (gamesControllerRef.current) {
-            gamesControllerRef.current.abort();
-        }
+    const selectedPlatform = useMemo(
+        () => platforms.find(p => p.id === platformId) || null,
+        [platforms, platformId]
+    );
 
-        const controller = new AbortController();
-        gamesControllerRef.current = controller;
+    // Загрузка платформ
 
-        setLoadingGames(true);
-        try {
-            const url = `${BASE_URL}/games?key=${API_KEY}&platforms=${platformId}&page_size=${PAGE_SIZE}&page=${page}`;
-            const res = await fetch(url, { signal: controller.signal });
-
-            if (!res.ok) throw new Error(`HTTP ${res.status}`);
-
-            const data = await res.json();
-            if (!controller.signal.aborted) {
-                setGames(data.results || []);
-                setTotalPages(Math.ceil((data.count || 0) / PAGE_SIZE));
-            }
-        } catch (e) {
-            if (!controller.signal.aborted) {
-                console.error("Ошибка загрузки игр:", e);
-            }
-        } finally {
-            if (!controller.signal.aborted) {
-                setLoadingGames(false);
-            }
-        }
-    }, []);
-
-    const handleSelectPlatform = (id, name) => {
-        setSelectedPlatform({ id, name });
-        setPage(1);
-        setSearchParams({ platform: id, page: "1" });
-        loadGamesForPlatform(id, 1);
-    };
-
-    const handlePageChange = (newPage) => {
-        setPage(newPage);
-        setSearchParams({ platform: selectedPlatform.id, page: String(newPage) });
-        loadGamesForPlatform(selectedPlatform.id, newPage);
-    };
-
-    const handleClear = () => {
-        setSelectedPlatform(null);
-        setGames([]);
-        setPage(1);
-        setSearchParams({});
-    };
-
-    // Загрузка списка платформ
     useEffect(() => {
         const controller = new AbortController();
 
@@ -82,7 +39,9 @@ export function PlatformCards() {
                 const res = await fetch(`${BASE_URL}/platforms?key=${API_KEY}`, {
                     signal: controller.signal,
                 });
+
                 if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
                 const data = await res.json();
                 if (!controller.signal.aborted) {
                     setPlatforms(data.results || []);
@@ -99,26 +58,68 @@ export function PlatformCards() {
         };
 
         loadPlatforms();
-
-        return () => {
-            controller.abort();
-        };
+        return () => controller.abort();
     }, []);
 
-    // Обработка URL
-    const platformIdFromUrl = searchParams.get("platform");
+    // Загрузка игр при изменении URL
+
+    const loadGamesForPlatform = useCallback(async (platformId, page) => {
+        if (!platformId) return;
+
+        if (gamesControllerRef.current) {
+            gamesControllerRef.current.abort();
+        }
+
+        const controller = new AbortController();
+        gamesControllerRef.current = controller;
+
+        setLoadingGames(true);
+
+        try {
+            const url = `${BASE_URL}/games?key=${API_KEY}&platforms=${platformId}&page_size=${PAGE_SIZE}&page=${page}`;
+            const res = await fetch(url, { signal: controller.signal });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+            const data = await res.json();
+
+            if (!controller.signal.aborted) {
+                setGames(data.results || []);
+            }
+        } catch (e) {
+            if (!controller.signal.aborted) {
+                console.error("Ошибка загрузки игр:", e);
+            }
+        } finally {
+            if (!controller.signal.aborted) {
+                setLoadingGames(false);
+            }
+        }
+    }, []);
+
     useEffect(() => {
-        if (!platformIdFromUrl || platforms.length === 0) return;
+        if (!platformId) {
+            setGames([]);
+            return;
+        }
 
-        const platformId = Number(platformIdFromUrl);
-        const platform = platforms.find(p => p.id === platformId);
-        if (!platform) return;
+        loadGamesForPlatform(platformId, page);
+    }, [platformId, page, loadGamesForPlatform]);
 
-        const pageFromUrl = Number(searchParams.get("page")) || 1;
-        setSelectedPlatform(platform);
-        setPage(pageFromUrl);
-        loadGamesForPlatform(platformId, pageFromUrl);
-    }, [platforms, platformIdFromUrl, searchParams, loadGamesForPlatform]);
+    // Заголовок меняen только URL
+
+    const handleSelectPlatform = (id) => {
+        setSearchParams({ platform: id, page: "1" });
+    };
+
+    const handlePageChange = (newPage) => {
+        setSearchParams({ platform: platformId, page: String(newPage) });
+    };
+
+    const handleClear = () => {
+        setSearchParams({});
+    };
+
 
     return (
         <main className="container content">
@@ -126,7 +127,7 @@ export function PlatformCards() {
                 <div className="platform-filter" style={{ display: "flex", textAlign: "left" }}>
                     <p><b>Игровая платформа:</b></p>
                     <RadioInput
-                        selectedPlatform={selectedPlatform?.id || null}
+                        selectedPlatform={platformId}
                         onSelect={handleSelectPlatform}
                         onClear={handleClear}
                         style={{ marginLeft: "10px" }}
@@ -137,6 +138,7 @@ export function PlatformCards() {
             {selectedPlatform ? (
                 <div>
                     <div className="platform-title">{selectedPlatform.name}</div>
+
                     {loadingGames ? (
                         <div className="grid">
                             {Array.from({ length: PAGE_SIZE }).map((_, i) => (
@@ -154,7 +156,6 @@ export function PlatformCards() {
                                                     className="platform-img"
                                                     src={item.background_image}
                                                     alt={item.name}
-                                                    style={{ width: "100%" }}
                                                 />
                                             )}
                                             <div className="platform-content">
@@ -164,9 +165,9 @@ export function PlatformCards() {
                                     </div>
                                 ))}
                             </div>
+
                             <Pagination
                                 page={page}
-                                totalPages={totalPages}
                                 onPageChange={handlePageChange}
                             />
                         </>
@@ -175,16 +176,13 @@ export function PlatformCards() {
             ) : loadingPlatforms ? (
                 <div className="grid">
                     {Array.from({ length: 12 }).map((_, i) => (
-                        <div key={i}>
-                            <h4 className="platform-title"></h4>
-                            <SkeletonCard isPlatform />
-                        </div>
+                        <SkeletonCard key={i} isPlatform />
                     ))}
                 </div>
             ) : (
                 <div className="grid">
                     {platforms.map((item) => (
-                        <Link to={`?platform=${item.id}`} key={item.id}>
+                        <Link to={`?platform=${item.id}&page=1`} key={item.id}>
                             <h4 className="platform-title">{item.name}</h4>
                             <div className="cardd">
                                 <div className="image-wrapper">
