@@ -25,6 +25,7 @@ function GamePage() {
   useEffect(() => {
     const controller = new AbortController();
     const signal = controller.signal;
+
     const loadGame = async () => {
       setLoading(true);
       setError(null);
@@ -60,146 +61,147 @@ function GamePage() {
     };
   }, [id])
 
-  if (loading) return <p className="height-100"><Preloader /></p>
+  if (loading) return <div className="height-100"><Preloader /></div>;
   if (error) return <p>Ошибка: {error}</p>;
   if (!game) return <p>Данные об играх не найдены</p>;
 
   const background = game.background_image_additional || game.background_image || "";
 
   return (
-    <div
-      className="container-background"
-      style={{
-        backgroundImage: background ? `url(${background})` : "none",
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-        minHeight: "100vh",
-      }}
-    >
+    <>
       <div
-        className="container-full"
-        style={{ padding: "20px", maxWidth: "800px", margin: "0 auto" }}
+        className="container-background"
+        style={{
+          backgroundImage: background ? `url(${background})` : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          minHeight: "100vh",
+        }}
       >
-        <h1 className="GamePage__title">{game.name}</h1>
+        <div
+          className="container-full"
+          style={{ maxWidth: "800px", margin: "0 auto" }}
+        >
+          <h1 className="GamePage__title">{game.name}</h1>
 
-        {/* Главное изображение */}
-        {game.background_image ? (
-          <img
-            src={game.background_image}
-            alt={game.name}
-            style={{
-              width: "100%",
-              height: "400px",
-              objectFit: "cover",
-              objectPosition: "top",
-              borderRadius: "8px",
-              marginBottom: "16px",
-            }}
-          />
-        ) : (
-          <div
-            style={{
-              width: "100%",
-              height: "400px",
-              backgroundColor: "#ccc",
-              borderRadius: "8px",
-              marginBottom: "16px",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            Нет изображения
-          </div>
-        )}
-
-        <div className="gamePage-wrapper">
-          {/* Разработчики */}
-          <h5>Разработчики:</h5>
-          {game.developers?.length > 0 ? (
-            game.developers.map((dev) => (
-              <div key={dev.id} className="developer">
-                <p>{dev.name}</p>
-                {dev.image_background && (
-                  <img
-                    src={dev.image_background}
-                    width="200"
-                    alt={dev.name}
-                    style={{ borderRadius: "4px", marginTop: "8px" }}
-                  />
-                )}
-              </div>
-            ))
+          {/* Главное изображение */}
+          {game.background_image ? (
+            <img
+              src={game.background_image}
+              alt={game.name}
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "cover",
+                objectPosition: "top",
+                marginBottom: "16px",
+              }}
+            />
           ) : (
-            <p>Нет информации</p>
-          )}
-
-          {/* Рейтинги */}
-          <h5>Оценки:</h5>
-          {game.ratings?.length > 0 ? (
-            <div className="ranking">
-              {game.ratings.map((g, index) => {
-                const style =
-                  ratingStyles[g.title.toLowerCase()] || { label: g.title, color: "black" };
-                return (
-                  <div className="ranking-item" key={`${g.title}-${index}`} style={{ marginBottom: "8px" }}>
-                    <div style={{ color: style.color, fontWeight: "bolder" }}>{style.label}:</div>
-                    <div>Количество: {g.count}</div>
-                    <div>Процент: {g.percent}%</div>
-                  </div>
-                );
-              })}
+            <div
+              style={{
+                width: "100%",
+                height: "400px",
+                backgroundColor: "#ccc",
+                borderRadius: "8px",
+                marginBottom: "16px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              Нет изображения
             </div>
-          ) : (
-            <p>Нет оценок</p>
           )}
 
-          {/* Теги через запятую */}
-          <h5>Теги:</h5>
-          <p>
-            {game.tags?.length > 0
-              ? game.tags.map((tag) => tag.name).join(", ")
-              : "Нет тегов"}
-          </p>
+          <div className="gamePage-wrapper">
+            {/* Разработчики */}
+            <h5>Разработчики:</h5>
+            {game.developers?.length > 0 ? (
+              game.developers.map((dev) => (
+                <div key={dev.id} className="developer">
+                  <p>{dev.name}</p>
+                  {dev.image_background && (
+                    <img
+                      src={dev.image_background}
+                      width="200"
+                      alt={dev.name}
+                      style={{ borderRadius: "4px", marginTop: "8px" }}
+                    />
+                  )}
+                </div>
+              ))
+            ) : (
+              <p>Нет информации</p>
+            )}
 
-          {/* Сайт */}
-          <h5>Веб-сайт</h5>
-          {game.website ? (
-            <a href={game.website} target="_blank" rel="noopener noreferrer">
-              {game.website}
-            </a>
-          ) : (
-            <p>Ссылка отсутствует</p>
-          )}
+            {/* Рейтинги */}
+            <h5>Оценки:</h5>
+            {game.ratings?.length > 0 ? (
+              <div className="ranking">
+                {game.ratings.map((g, index) => {
+                  const style =
+                    ratingStyles[g.title.toLowerCase()] || { label: g.title, color: "black" };
+                  return (
+                    <div className="ranking-item" key={`${g.title}-${index}`} style={{ marginBottom: "8px" }}>
+                      <div style={{ color: style.color, fontWeight: "bolder" }}>{style.label}:</div>
+                      <div>Количество: {g.count}</div>
+                      <div>Процент: {g.percent}%</div>
+                    </div>
+                  );
+                })}
+              </div>
+            ) : (
+              <p>Нет оценок</p>
+            )}
 
-          {/* Основная информация */}
-          <h5>Описание:</h5>
-          <p>
-            <strong>Дата релиза:</strong> {game.released || "Не указана"}
-          </p>
-          <p>
-            <strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
-          </p>
-          <p>
-            <strong>Оценка на Metacritic:</strong> {game.metacritic || "Нет оценки"}
-          </p>
-          <p>
-            <strong>Платформы:</strong>{" "}
-            {game.platforms?.map((p) => p.platform.name).join(", ") || "Не указаны"}
-          </p>
-          <p>
-            <strong>Жанры:</strong>{" "}
-            {game.genres?.map((g) => g.name).join(", ") || "Не указаны"}
-          </p>
+            {/* Теги через запятую */}
+            <h5>Теги:</h5>
+            <p>
+              {game.tags?.length > 0
+                ? game.tags.map((tag) => tag.name).join(", ")
+                : "Нет тегов"}
+            </p>
 
-          {game.description_raw && <p>{game.description_raw}</p>}
+            {/* Сайт */}
+            <h5>Веб-сайт</h5>
+            {game.website ? (
+              <a href={game.website} target="_blank" rel="noopener noreferrer">
+                {game.website}
+              </a>
+            ) : (
+              <p>Ссылка отсутствует</p>
+            )}
 
-          <button onClick={() => navigate(-1)} className="GamePage__btn-back">
-            ← Назад к списку
-          </button>
+            {/* Основная информация */}
+            <h5>Описание:</h5>
+            <p>
+              <strong>Дата релиза:</strong> {game.released || "Не указана"}
+            </p>
+            <p>
+              <strong>Рейтинг:</strong> {game.rating ? `${game.rating} / 5` : "Нет рейтинга"}
+            </p>
+            <p>
+              <strong>Оценка на Metacritic:</strong> {game.metacritic || "Нет оценки"}
+            </p>
+            <p>
+              <strong>Платформы:</strong>{" "}
+              {game.platforms?.map((p) => p.platform.name).join(", ") || "Не указаны"}
+            </p>
+            <p>
+              <strong>Жанры:</strong>{" "}
+              {game.genres?.map((g) => g.name).join(", ") || "Не указаны"}
+            </p>
+
+            {game.description_raw && <p>{game.description_raw}</p>}
+
+            <button onClick={() => navigate(-1)} className="GamePage__btn-back">
+              ← Назад к списку
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

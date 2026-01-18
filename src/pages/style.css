@@ -215,7 +215,7 @@ span {
 .GamePage__title {
   font-size: 2.5rem;
   text-align: center;
-  margin-bottom: 10px;
+  padding: 20px 0 20px 0;
 }
 
 .GamePage__tags {

@@ -36,10 +36,15 @@ function App() {
   }, [searchGames]);
 
   return (
-    <HashRouter>
+    <HashRouter
+      future={{
+    v7_startTransition: true,
+    v7_relativeSplatPath: true,
+  }}>
       <Header onSearch={searchGames} />
       <ScrollToTop />
-      <Routes>
+      <Routes
+    >
         <Route
           path="/"
           element={

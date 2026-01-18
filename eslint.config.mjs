@@ -13,6 +13,11 @@ export default [
       globals: globals.browser,
       ecmaVersion: "latest",
       sourceType: "module",
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
 
     plugins: {
@@ -23,6 +28,8 @@ export default [
     rules: {
       ...react.configs.recommended.rules,
       ...reactHooks.configs.recommended.rules,
+        "react/react-in-jsx-scope": "off"
+
     },
 
     settings: {
