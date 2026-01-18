@@ -73,42 +73,22 @@ function GamePage() {
         className="container-background"
         style={{
           backgroundImage: background ? `url(${background})` : "none",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          minHeight: "100vh",
         }}
       >
         <div
           className="container-full"
-          style={{ maxWidth: "800px", margin: "0 auto" }}
         >
           <h1 className="GamePage__title">{game.name}</h1>
 
           {/* Главное изображение */}
           {game.background_image ? (
             <img
+              className="game_background-img"
               src={game.background_image}
               alt={game.name}
-              style={{
-                width: "100%",
-                height: "auto",
-                objectFit: "cover",
-                objectPosition: "top",
-                marginBottom: "16px",
-              }}
             />
           ) : (
-            <div
-              style={{
-                width: "100%",
-                height: "400px",
-                backgroundColor: "#ccc",
-                borderRadius: "8px",
-                marginBottom: "16px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
+            <div className="game_background-img__empty"
             >
               Нет изображения
             </div>
@@ -122,11 +102,9 @@ function GamePage() {
                 <div key={dev.id} className="developer">
                   <p>{dev.name}</p>
                   {dev.image_background && (
-                    <img
+                    <img className="gamePage-image"
                       src={dev.image_background}
-                      width="200"
                       alt={dev.name}
-                      style={{ borderRadius: "4px", marginTop: "8px" }}
                     />
                   )}
                 </div>
@@ -143,7 +121,7 @@ function GamePage() {
                   const style =
                     ratingStyles[g.title.toLowerCase()] || { label: g.title, color: "black" };
                   return (
-                    <div className="ranking-item" key={`${g.title}-${index}`} style={{ marginBottom: "8px" }}>
+                    <div className="ranking-item" key={`${g.title}-${index}`}>
                       <div style={{ color: style.color, fontWeight: "bolder" }}>{style.label}:</div>
                       <div>Количество: {g.count}</div>
                       <div>Процент: {g.percent}%</div>

@@ -176,7 +176,7 @@ export function PlatformCards() {
                 <div className="grid">
                     {Array.from({ length: 12 }).map((_, i) => (
                         <div key={i}>
-                            <h4 className="platform-title" style={{ visibility: 'hidden', height: 0, margin: 0 }}>X</h4>
+                            <h4 className="platform-title"></h4>
                             <SkeletonCard isPlatform />
                         </div>
                     ))}
