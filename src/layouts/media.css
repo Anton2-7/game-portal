@@ -8,18 +8,18 @@
     z-index: 2;
     text-align: center;
   }
-  .r-searchM {
-    display: flex !important;
-    align-items: center;
-    border: 1px solid #000000;
-    padding: 5px 15px 5px 15px;
+  .r-searchM{
+  height: 40px !important;
   }
+.searchM_wrapper {
+  min-height: auto !important;
+    background-position: 50% 50%;
+
+}
   .games {
     margin-top: 15px !important;
   }
-  .r-search {
-    display: none !important;
-  }
+
   .menu-list {
     display: none !important;
   }
@@ -42,9 +42,15 @@
   .search-btn {
     display: none;
   }
+  .SearchM_wrapper {
+  background-position: center center;
+  min-height: 300px !important;
+  background-size: cover;
+}
 }
 
 @media (max-width: 399px) {
+  
   .soldierIcn {
     display: none;
   }

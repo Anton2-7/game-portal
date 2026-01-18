@@ -233,9 +233,9 @@ button:focus {
 }
 
 #searchM {
-  margin: 0 0 0 10px !important;
+  margin: 0 0 0 30px !important;
   font-size: 1.3rem !important;
-  color: #000000;
+  color: #ff0000;
   font-weight: 600;
   display: flex;
 }
@@ -350,10 +350,7 @@ input[type="text"] {
   z-index: 1;
 }
 
-.r-searchM {
-  margin-top: 20px;
-  display: none;
-}
+
 
 .validate {
   margin-right: 10px;
@@ -374,6 +371,7 @@ input[type="text"] {
   cursor: pointer;
   background: none;
   font-weight: 600;
+  margin-right: 20px;
   color: #000000;
   align-items: center;
   display: flex;

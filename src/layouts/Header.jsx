@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { Search } from "../components/Search";
 import SoldierIcon from "../images/soldier.png";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
@@ -84,7 +83,6 @@ function Header(props) {
               </Link>
             </div>
             <ul className="menu-list">
-              <Search onSearch={props.onSearch} location={location} />
               <li><Link to="/"><i className="material-icons">игры</i></Link></li>
               <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
             </ul>
