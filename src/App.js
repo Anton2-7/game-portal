@@ -6,6 +6,7 @@ import { HashRouter, Routes, Route } from "react-router-dom";
 import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/cards/PlatformCards";
 import { ScrollToTop } from "./components/ScrollToTop";
+import { ScrollToTopButton } from "./components/ScrollToTopBtn";
 
 const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
 
@@ -61,6 +62,7 @@ function App() {
         />
       </Routes>
       <Footer />
+      <ScrollToTopButton />
     </HashRouter>
   );
 }

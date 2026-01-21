@@ -8,6 +8,9 @@
     z-index: 2;
     text-align: center;
   }
+  .scroll-top-btn {
+    right: 25px !important;
+  }
   .r-searchM{
   height: 40px !important;
   }
