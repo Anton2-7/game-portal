@@ -5,7 +5,7 @@ import { useLocation } from "react-router-dom";
 import flag from "../images/flag.gif"
 import { useRef } from "react";
 
-function Header(props) {
+function Header() {
 
 
 

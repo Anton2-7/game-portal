@@ -32,7 +32,7 @@ function App() {
   },[]);
 
   useEffect(() => {
-    searchGames("cyberpunk");
+    searchGames("");
   }, [searchGames]);
 
   return (

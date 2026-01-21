@@ -75,6 +75,7 @@ export function RadioInput({ onSelect, onClear, selectedPlatform }) {
                 isClearable={true}
                 placeholder="Выберите платформу"
                 isSearchable={false}
+                data-testid="platform-select"
             />
         </div>
     );

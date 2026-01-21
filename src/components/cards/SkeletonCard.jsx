@@ -1,6 +1,6 @@
 export function SkeletonCard({ isPlatform = false }) {
     return (
-        <div className="cardd skeleton">
+        <div data-testid="skeleton-card" className="cardd skeleton">
             <div className="image-wrapper">
                 <div className="skeleton-img"></div>
             </div>
