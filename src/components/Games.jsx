@@ -4,9 +4,9 @@ import { SearchM } from "./SearchM";
 function Games({ games = [], searchGames }) {
   return (
     <>
-      <div className="searchM_wrapper">
+      <main className="searchM_wrapper">
         <SearchM onSearch={searchGames} />
-      </div >
+      </main >
 
       <div className="games">
         {games.length > 0 ? (

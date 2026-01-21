@@ -1,103 +1,117 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import SoldierIcon from "../images/soldier.png";
-import { Link } from "react-router-dom";
-import { useLocation } from "react-router-dom";
-import flag from "../images/flag.gif"
-import { useRef } from "react";
+import { Link, useLocation } from "react-router-dom";
+import flag from "../images/flag.gif";
 
 function Header() {
-
-
-
-  const [isOpen, setOpen] = useState(false);
-  const menuRef = useRef(null); // где совершен клик
-  const [isMobile, setIsMobile] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia("(max-width: 768px)").matches;
-  });
-
-  useEffect(() => {
-
-    const MobileAdaptive = window.matchMedia('(max-width: 768px)');
-
-
-    const handleChange = (e) => {
-      setIsMobile(e.matches); // совпадение ли условия медиа запроса
-    };
-
-
-    MobileAdaptive.addEventListener('change', handleChange) // отслеживание изменений
-
-
-    const handleCloseMenu = (event) => {
-
-      if (!menuRef.current) return;       // Защита от ошибки на случай, если menuRef.current ещё не монитрован
-
-      if (!menuRef.current.contains(event.target)) {        // contains вернет target (true → если target внутри menuRef) (false → если клик снаружи)
-
-        setOpen(false);
-      }
-
-    }
-
-
-    window.addEventListener('click', handleCloseMenu);
-    return () => {
-      window.removeEventListener('click', handleCloseMenu);
-      MobileAdaptive.removeEventListener('change', handleChange);
-    }
-  }, []);
-
-
-  const toggleMenu = () => {
-    setOpen((prev) => !prev);
-  };
-
-
-
   const location = useLocation();
 
+  const burgerRef = useRef(null);
+  const menuRef = useRef(null);
 
+  const [isOpen, setIsOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return window.matchMedia("(max-width: 992px)").matches;
+  });
 
+  const toggleMenu = () => {
+    setIsOpen((prev) => !prev);
+  };
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(max-width: 992px)");
+
+    const handleMediaChange = (e) => {
+      setIsMobile(e.matches);
+      if (!e.matches) {
+        setIsOpen(false);
+      }
+    };
+
+    const handleClickOutside = (event) => {
+      if (
+        !isOpen ||
+        !isMobile ||
+        !menuRef.current ||
+        menuRef.current.contains(event.target) ||
+        burgerRef.current?.contains(event.target)
+      ) {
+        return;
+      }
+
+      setIsOpen(false);
+    };
+
+    mediaQuery.addEventListener("change", handleMediaChange);
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      mediaQuery.removeEventListener("change", handleMediaChange);
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, [isOpen, isMobile]);
 
   return (
-    <>
-      <nav className="red darken-4" >
-        <div className="container">
-          <div className="nav-wrapper">
-            <div className="logo-wrapper">
-              <button
-                className={`burger ${isOpen ? "open" : ""}`}
-                onClick={toggleMenu}
-                aria-label="Открыть меню"
-                ref={menuRef}
-              ></button>
-              {location.pathname !== "/" && isMobile ? (
-                <img src={flag} alt="flag" className="flag-img" />
-              ) : (
-                <img src={SoldierIcon} alt="logo" className="logo-img" />
-              )}
+    <nav className="red darken-4">
+      <div className="container">
+        <div className="nav-wrapper">
+          <div className="logo-wrapper">
+            <button
+              ref={burgerRef}
+              className={`burger ${isOpen ? "open" : ""}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMenu();
+              }}
+              aria-label={isOpen ? "Закрыть меню" : "Открыть меню"}
+              aria-expanded={isOpen}
+              aria-controls="mobile-menu"
+            />
 
-              <Link to="/" className="brand-logo">
-                Игровой Portal
-              </Link>
-            </div>
-            <ul className="menu-list">
-              <li><Link to="/"><i className="material-icons">игры</i></Link></li>
-              <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
-            </ul>
+            {location.pathname !== "/" && isMobile ? (
+              <img src={flag} alt="flag" className="flag-img" />
+            ) : (
+              <img src={SoldierIcon} alt="logo" className="logo-img" />
+            )}
+
+            <Link to="/" className="brand-logo">
+              Игровой Portal
+            </Link>
           </div>
 
-          <div className={`burger-menu ${isOpen ? "active" : ""} red darken-4`}
-          >
-            <ul className="burger-list">
-              <li><Link to="/"><i className="material-icons">игры</i></Link></li>
-              <li><Link to="/platforms"><i className="material-icons">платформы</i></Link></li>
-            </ul>
-          </div>
+          <ul className="menu-list">
+            <li>
+              <Link to="/" className="menu-list__item">игры</Link>
+            </li>
+            <li>
+              <Link to="/platforms" className="menu-list__item">платформы</Link>
+            </li>
+          </ul>
         </div>
-      </nav >
-    </>
+
+        <div
+          id="mobile-menu"
+          ref={menuRef}
+          className={`burger-menu ${isOpen && isMobile ? "active" : ""}`}
+          inert={!isOpen || !isMobile}
+        >
+
+          <ul className="burger-list">
+            <li>
+              <Link to="/" onClick={() => setIsOpen(false)} className="burger-list__item">
+                игры
+              </Link>
+            </li>
+            <li>
+              <Link to="/platforms" onClick={() => setIsOpen(false)} className="burger-list__item">
+                платформы
+              </Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav >
   );
 }
 

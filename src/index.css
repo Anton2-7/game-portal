@@ -119,7 +119,7 @@ nav .brand-logo {
   position: absolute;
   top: 65px;
   left: 1.5rem;
-  background-color: #b71c1c; /* red darken-4 */
+  background-color: #b71c1c;
   padding: 1rem;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
@@ -127,11 +127,17 @@ nav .brand-logo {
   transform: translateY(-20px);
   pointer-events: none;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  z-index: 2;
+  z-index: 1000;
+}
+
+.burger:focus-visible {
+  outline: 3px solid #fff;
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 
 .burger-menu.active {
-  opacity: 1;
+ opacity: 1;
   transform: translateY(0);
   pointer-events: auto;
 }
@@ -144,7 +150,11 @@ input:focus {
   display: flex;
   flex-direction: column;
 }
-
+.burger-list__item, .menu-list__item {
+  font-size: 20px;
+  font-weight: 600;
+  font-style: italic;
+}
 button:hover {
   background-color: rgba(255, 255, 255, 0) !important;
 }
@@ -163,8 +173,9 @@ button:focus {
   width: 40px;
   display: none;
   height: 26px;
-  z-index: 3;
+  z-index: 1001;
   margin: 1rem 1.2rem 1rem 1.2rem;
+
 }
 .burger::before,
 .burger::after {
@@ -366,7 +377,6 @@ input[type="text"] {
 }
 
 .clearSearchBtn {
-  outline: none;
   border: none;
   cursor: pointer;
   background: none;
@@ -376,6 +386,11 @@ input[type="text"] {
   align-items: center;
   display: flex;
   font-size: 1.2rem;
+}
+.clearSearchBtn:focus-visible {
+  outline: 3px solid #b71c1c;
+  outline-offset: 4px;
+  border-radius: 6px;
 }
 .side-menu_filter {
   position: fixed;
