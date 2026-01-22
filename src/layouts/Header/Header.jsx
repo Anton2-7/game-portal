@@ -1,7 +1,8 @@
 import { useEffect, useState, useRef } from "react";
-import SoldierIcon from "../images/soldier.png";
 import { Link, useLocation } from "react-router-dom";
-import flag from "../images/flag.gif";
+import "./style.css";
+import SoldierIcon from "../../images/soldier.png";
+import flag from "../../images/flag.gif";
 
 function Header() {
   const location = useLocation();

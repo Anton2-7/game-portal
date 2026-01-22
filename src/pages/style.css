@@ -82,12 +82,7 @@
   opacity: 0.8;
 }
 
-.flag-img {
-  width: 50px;
-  height: 50px;
-  position: relative;
-  border-radius: 5px;
-}
+
 
 .developer {
   display: flex;
@@ -135,30 +130,8 @@
   margin: 0 auto;
   margin-bottom: 8px;
 }
-.r-searchM{
-  display: flex;
-  background-color: white;
-  top: 50%;
-  height: 50px;
-  border-radius: 50px;
-  align-items: center;
-  width: 600px;
-  align-items: center;
-}
 
 
-
-.searchM_wrapper {
-  align-items: center;
-  display: flex;
-  padding: 40px;
-  min-height: 550px; 
-  justify-content: center;
-  background-image: url('https://media1.tenor.com/m/UQSBqH_jKOwAAAAd/big-boss-smoke.gif');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: 50% 40%;
-}
 
 input:not([type]),
 input[type="text"]:not(.browser-default),
@@ -289,8 +262,4 @@ span {
   min-width: 40px;
   text-align: center;
   vertical-align: middle;
-}
-.card .card-content p {
-  color: #ee6e73;
-  font-weight: 500;
 }

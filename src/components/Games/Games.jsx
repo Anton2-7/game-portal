@@ -1,5 +1,6 @@
-import { GameList } from "./GameList";
-import { SearchM } from "./SearchM";
+import { GameList } from "../GameList/GameList";
+import "./style.css";
+import { SearchM } from "../SearchM/SearchM";
 
 function Games({ games = [], searchGames }) {
   return (

@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
-import { Header } from "./layouts/Header";
-import { Footer } from "./layouts/Footer";
+import { Footer } from "./layouts/Footer/Footer";
 import { Main } from "./layouts/Main";
+import { Header } from "./layouts/Header/Header";
 import { HashRouter, Routes, Route } from "react-router-dom";
 import { GamePage } from "./pages/GamePage";
 import { PlatformCards } from "./components/cards/PlatformCards";

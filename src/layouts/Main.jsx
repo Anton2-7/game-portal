@@ -1,5 +1,5 @@
 import React from "react";
-import { Games } from "../components/Games";
+import { Games } from "../components/Games/Games";
 import { Preloader } from "../components/Preloader";
 
 class Main extends React.Component {

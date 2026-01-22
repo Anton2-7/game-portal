@@ -1,4 +1,4 @@
-import { Weather } from "../components/Weather/Weather";
+import { Weather } from "../../components/Weather/Weather";
 function Footer() {
   return (
     <>
