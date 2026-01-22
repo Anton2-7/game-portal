@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Preloader } from "../components/Preloader.jsx";
 import "./style.css";
 
-const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
+const API_KEY = process.env.REACT_APP_RAWG_KEY;
 
 
 function GamePage() {

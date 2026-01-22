@@ -6,7 +6,7 @@ import { Pagination } from "../Pagination/Pagination";
 import { SkeletonCard } from "../Skeleton/SkeletonCard";
 
 const PAGE_SIZE = 20;
-const API_KEY = "d8fc05cc67f04e5bbab96f5d93677084";
+const API_KEY = process.env.REACT_APP_RAWG_KEY;
 const BASE_URL = "https://api.rawg.io/api";
 
 export function PlatformCards() {

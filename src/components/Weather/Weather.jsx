@@ -3,7 +3,7 @@ import './style.css';
 import gpsIcon from "../../images/gps-2.png";
 import { useSearchParams } from "react-router-dom";
 
-const API_KEY_WEATHER = "d463a889c5bf1f92dc24f0f16a3d68f2";
+const API_KEY_WEATHER = process.env.REACT_APP_WHEATHER_API_KEY;
 const UNITS = "metric";
 const LANG = "ru";
 
