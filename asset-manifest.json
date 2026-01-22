@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/game-portal/static/css/main.58face4d.css",
-    "main.js": "/game-portal/static/js/main.664b2f23.js",
+    "main.js": "/game-portal/static/js/main.f7ebe2f9.js",
     "static/media/gps-2.png": "/game-portal/static/media/gps-2.e3684f1defd4c82fb2a6.png",
     "static/media/flag.gif": "/game-portal/static/media/flag.1cb1461a72c5853d04f7.gif",
     "index.html": "/game-portal/index.html",
     "main.58face4d.css.map": "/game-portal/static/css/main.58face4d.css.map",
-    "main.664b2f23.js.map": "/game-portal/static/js/main.664b2f23.js.map"
+    "main.f7ebe2f9.js.map": "/game-portal/static/js/main.f7ebe2f9.js.map"
   },
   "entrypoints": [
     "static/css/main.58face4d.css",
-    "static/js/main.664b2f23.js"
+    "static/js/main.f7ebe2f9.js"
   ]
 }
