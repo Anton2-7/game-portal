@@ -209,13 +209,18 @@ button:focus {
 .scroll-top-btn:active {
     background-color: #811414 !important; 
     transform: translateY(0);
+}
 
+.scroll-top-btn:focus {
+  background-color: #811414 ;
 }
 
 .scroll-top-btn:focus-visible {
-outline: 3px solid #fff;
+  outline: 3px solid #fff;
   outline-offset: 4px;
   border-radius: 6px;
+  background-color: #811414 ;
+
   
 }
 
